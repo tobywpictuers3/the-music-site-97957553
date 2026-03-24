@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Perspective Blog – Design System
+   Inspired by tobymusic's warm gold/wine/ivory palette
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Warm ivory + gold + wine palette */
+    --background: 45 60% 96%;
+    --foreground: 18 18% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 18 18% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 18 18% 8%;
+
+    --primary: 39 76% 63%;
+    --primary-foreground: 18 18% 8%;
+
+    --secondary: 45 35% 92%;
+    --secondary-foreground: 18 18% 10%;
+
+    --muted: 45 20% 90%;
+    --muted-foreground: 28 8% 38%;
+
+    --accent: 6 70% 33%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 18 18% 12% / 0.14;
+    --input: 18 18% 12% / 0.16;
+    --ring: 39 76% 63%;
+
+    --radius: 0.625rem;
+
+    /* Brand tokens */
+    --gold-main: 39 76% 63%;
+    --gold-dark: 36 52% 42%;
+    --gold-light: 44 82% 75%;
+    --wine-main: 6 70% 33%;
+    --wine-light: 10 60% 38%;
+
+    /* Tag colors */
+    --tag-financing: 39 76% 85%;
+    --tag-lifestyle: 45 35% 85%;
+    --tag-community: 6 40% 80%;
+    --tag-wellness: 140 25% 78%;
+    --tag-travel: 195 45% 78%;
+    --tag-creativity: 330 35% 80%;
+    --tag-growth: 50 45% 78%;
+
+    /* Shadows & effects */
+    --shadow-soft: 0 10px 30px rgba(20, 18, 16, 0.10);
+    --shadow-hover: 0 20px 40px rgba(20, 18, 16, 0.15);
+    --glow-gold: 0 0 0 1px rgba(230, 182, 92, 0.25), 0 10px 40px rgba(230, 182, 92, 0.14);
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 45 30% 92%;
+
+    --card: 0 0% 7%;
+    --card-foreground: 45 30% 92%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 45 30% 92%;
+
+    --primary: 39 76% 63%;
+    --primary-foreground: 0 0% 6%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 45 30% 92%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 40 12% 72%;
+
+    --accent: 6 70% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 45 30% 92% / 0.10;
+    --input: 45 30% 92% / 0.12;
+    --ring: 39 76% 63%;
+
+    /* Dark tag colors */
+    --tag-financing: 39 50% 30%;
+    --tag-lifestyle: 45 25% 25%;
+    --tag-community: 6 40% 30%;
+    --tag-wellness: 140 20% 28%;
+    --tag-travel: 195 35% 28%;
+    --tag-creativity: 330 30% 30%;
+    --tag-growth: 50 35% 28%;
+
+    /* Dark shadows */
+    --shadow-soft: 0 14px 60px rgba(0, 0, 0, 0.55);
+    --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.6);
+    --glow-gold: 0 0 0 1px rgba(230, 182, 92, 0.18), 0 12px 60px rgba(230, 182, 92, 0.10);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Assistant", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", Georgia, serif;
+    @apply tracking-tight;
+  }
+}
+
+@layer utilities {
+  /* Card effects */
+  .card-hover {
+    @apply transition-all duration-300;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .hover-sparkle {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  .hover-sparkle:hover {
+    box-shadow: 0 0 20px rgba(230, 182, 92, 0.35), 0 0 40px rgba(230, 182, 92, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .glow-gold {
+    box-shadow: var(--glow-gold);
+  }
+
+  /* Nav pill */
+  .pill-nav {
+    @apply rounded-full bg-card/95 backdrop-blur-lg border border-border;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* Floating button */
+  .floating-button {
+    @apply w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300;
+    background: hsl(var(--primary) / 0.9);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 12px rgba(230, 182, 92, 0.3);
+  }
+
+  .floating-button:hover {
+    background: hsl(var(--primary));
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(230, 182, 92, 0.45);
+  }
+
+  /* Gold shimmer text */
+  @keyframes shimmer {
+    0%, 100% { background-position: 100% 0; }
+    50% { background-position: 0% 0; }
+  }
+
+  .shimmer-gold {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--gold-dark)) 0%,
+      hsl(var(--primary)) 50%,
+      hsl(var(--gold-light)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pageFadeIn {
+    from { opacity: 0; transform: scale(0.98) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+  .animate-slide-up { animation: slideUp 0.6s ease-out; }
+  .animate-slide-down { animation: slideDown 0.6s ease-out; }
+  .animate-scale-in { animation: scaleIn 0.5s ease-out; }
+  .page-enter { animation: pageFadeIn 0.4s ease-out; }
+
+  /* Stagger animations */
+  .stagger-1 { animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards; }
+  .stagger-2 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+  .stagger-3 { animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards; }
+  .stagger-4 { animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards; }
+  .stagger-5 { animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards; }
+  .stagger-6 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
+
+  /* Tag classes */
+  .tag-financing { background: hsl(var(--tag-financing)); color: hsl(var(--foreground)); }
+  .tag-lifestyle { background: hsl(var(--tag-lifestyle)); color: hsl(var(--foreground)); }
+  .tag-community { background: hsl(var(--tag-community)); color: hsl(var(--foreground)); }
+  .tag-wellness { background: hsl(var(--tag-wellness)); color: hsl(var(--foreground)); }
+  .tag-travel { background: hsl(var(--tag-travel)); color: hsl(var(--foreground)); }
+  .tag-creativity { background: hsl(var(--tag-creativity)); color: hsl(var(--foreground)); }
+  .tag-growth { background: hsl(var(--tag-growth)); color: hsl(var(--foreground)); }
+
+  /* Float animation for stage characters */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float-slow 4s ease-in-out infinite;
+  }
+  .animate-float-delay-1 { animation-delay: 0.5s; }
+  .animate-float-delay-2 { animation-delay: 1s; }
+  .animate-float-delay-3 { animation-delay: 1.5s; }
+  .animate-float-delay-4 { animation-delay: 2s; }
+  .animate-float-delay-5 { animation-delay: 2.5s; }
+
+  /* Hero light overlay for light-mode stage */
+  .hero-light-overlay {
+    background: linear-gradient(
+      180deg,
+      hsl(45 60% 96% / 0.3) 0%,
+      hsl(39 76% 63% / 0.15) 40%,
+      hsl(45 60% 96% / 0.4) 100%
+    );
+  }
+
+  /* Sign hover effect */
+  .sign-hover {
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .sign-hover:hover {
+    transform: scale(1.08) translateY(-3px);
+    filter: brightness(1.1);
+  }
+
+  /* Musical gradient for section backgrounds */
+  .musical-gradient {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--background) / 0.95) 50%,
+      hsl(var(--muted) / 0.3) 100%
+    );
+  }
+
+  /* Section card with gold border */
+  .card-brand {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--primary) / 0.25);
+    box-shadow: var(--shadow-soft);
+  }
+}
