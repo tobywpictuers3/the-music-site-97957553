@@ -49,9 +49,15 @@ import studentsStageAtmosphereWide from "@/assets/students/students-stage-atmosp
 import studentsDemoSystemPreview from "@/assets/students/students-demo-system-preview.webp";
 
 /* =========================================================
-   RED2 במקום RED3
+   טקסטורות רקע
    ========================================================= */
 import red2Texture from "@/assets/red2.png";
+import starsLightTexture from "@/assets/homepage/textures/stars-light.png";
+import starsLightRedTexture from "@/assets/homepage/textures/stars-light-red.png";
+import starsDarkTexture from "@/assets/homepage/textures/stars-dark.png";
+import starsDarkRedTexture from "@/assets/homepage/textures/stars-dark-red.png";
+import floorLightTexture from "@/assets/homepage/textures/floor-light.png";
+import floorDarkTexture from "@/assets/homepage/textures/floor-dark.png";
 
 type StudyCard = {
   key: string;
@@ -184,6 +190,7 @@ const PRIMARY_STUDIES: StudyCard[] = [
   {
     key: "piano",
     title: "פסנתר",
+    subtitle: "קריאה, טכניקה, הבעה ונגינה יציבה לאורך זמן",
     Icon: Music2,
     bullets: [
       "עבודה יסודית על טכניקות מגוונות של נגינה",
@@ -196,6 +203,7 @@ const PRIMARY_STUDIES: StudyCard[] = [
   {
     key: "flute",
     title: "חליל צד",
+    subtitle: "צליל נקי, נשימה נכונה ושליטה מדויקת בכלי",
     Icon: Mic2,
     bullets: [
       "עבודה על איכות הצליל ואמבז'ור מדויק",
@@ -383,6 +391,72 @@ function Red2Surface({
   );
 }
 
+
+/* ---------------------------------------------------------
+   משטחי טקסטורה עדינים
+   --------------------------------------------------------- */
+type TextureSurfaceProps = {
+  children: ReactNode;
+  className?: string;
+  innerClassName?: string;
+  roundedNone?: boolean;
+  variant?: "stars" | "starsRed" | "floor";
+  overlayClassName?: string;
+};
+
+function TextureSurface({
+  children,
+  className,
+  innerClassName,
+  roundedNone = false,
+  variant = "stars",
+  overlayClassName,
+}: TextureSurfaceProps) {
+  const lightTexture =
+    variant === "floor"
+      ? floorLightTexture
+      : variant === "starsRed"
+        ? starsLightRedTexture
+        : starsLightTexture;
+
+  const darkTexture =
+    variant === "floor"
+      ? floorDarkTexture
+      : variant === "starsRed"
+        ? starsDarkRedTexture
+        : starsDarkTexture;
+
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden ring-1 ring-white/10 shadow-[0_18px_50px_rgba(0,0,0,0.18)]",
+        roundedNone ? "rounded-none" : "rounded-[2rem]",
+        className
+      )}
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center dark:hidden"
+        style={{ backgroundImage: `url(${lightTexture})` }}
+      />
+      <div
+        className="absolute inset-0 hidden bg-cover bg-center dark:block"
+        style={{ backgroundImage: `url(${darkTexture})` }}
+      />
+
+      <div
+        className={cn(
+          "absolute inset-0 bg-white/44 dark:bg-black/34",
+          overlayClassName
+        )}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/26 via-transparent to-background/26 dark:from-black/28 dark:via-transparent dark:to-black/28" />
+      <div className="absolute inset-x-0 top-0 h-px bg-white/35 dark:bg-white/10" />
+
+      <div className={cn("relative", innerClassName)}>{children}</div>
+    </div>
+  );
+}
+
 /* ---------------------------------------------------------
    בועת דיבור
    --------------------------------------------------------- */
@@ -442,19 +516,25 @@ function SpeechBubble({
 type FloatingPresenterProps = {
   visible: boolean;
   bubbleVisible: boolean;
+  bubbleFading: boolean;
   text: string;
   speaking: boolean;
   onSpeak: () => void;
   onClose: () => void;
+  onBubbleMouseEnter: () => void;
+  onBubbleMouseLeave: () => void;
 };
 
 function FloatingPresenter({
   visible,
   bubbleVisible,
+  bubbleFading,
   text,
   speaking,
   onSpeak,
   onClose,
+  onBubbleMouseEnter,
+  onBubbleMouseLeave,
 }: FloatingPresenterProps) {
   return (
     <div
@@ -463,7 +543,12 @@ function FloatingPresenter({
         visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
       )}
     >
-      <div className="pointer-events-auto flex items-end gap-3">
+      <div
+        className={cn(
+          "pointer-events-auto flex items-end gap-3 transition-transform duration-500",
+          bubbleVisible ? "-translate-x-6" : "translate-x-0"
+        )}
+      >
         <div className="flex flex-col items-center gap-3">
           <AudioIconButton speaking={speaking} onClick={onSpeak} />
           <img
@@ -475,12 +560,16 @@ function FloatingPresenter({
         </div>
 
         <div
+          onMouseEnter={onBubbleMouseEnter}
+          onMouseLeave={onBubbleMouseLeave}
           className={cn(
-            "transition-all duration-500",
-            bubbleVisible
-              ? "translate-y-0 opacity-100"
-              : "pointer-events-none translate-y-4 opacity-0"
+            "transition-transform ease-out",
+            bubbleVisible ? "translate-y-0" : "pointer-events-none translate-y-4"
           )}
+          style={{
+            opacity: bubbleVisible ? (bubbleFading ? 0 : 1) : 0,
+            transitionDuration: bubbleVisible && bubbleFading ? "8000ms" : "450ms",
+          }}
         >
           <SpeechBubble tail="right" onClose={onClose} className="max-w-[360px]">
             <div className="text-right text-lg">“{text}”</div>
@@ -501,10 +590,12 @@ export default function Students() {
   const [showMiniPresenter, setShowMiniPresenter] = useState(false);
   const [floatingBubbleText, setFloatingBubbleText] = useState("");
   const [floatingBubbleVisible, setFloatingBubbleVisible] = useState(false);
+  const [floatingBubbleFading, setFloatingBubbleFading] = useState(false);
 
   const testimonialPauseRef = useRef(false);
   const heroPresenterSectionRef = useRef<HTMLElement | null>(null);
-  const floatingBubbleTimerRef = useRef<number | null>(null);
+  const floatingBubbleStartFadeTimerRef = useRef<number | null>(null);
+  const floatingBubbleCloseTimerRef = useRef<number | null>(null);
 
   function toggleSpeech(key: string, text: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -533,24 +624,52 @@ export default function Students() {
     synth.speak(utterance);
   }
 
+  function clearFloatingBubbleTimers() {
+    if (floatingBubbleStartFadeTimerRef.current) {
+      window.clearTimeout(floatingBubbleStartFadeTimerRef.current);
+      floatingBubbleStartFadeTimerRef.current = null;
+    }
+
+    if (floatingBubbleCloseTimerRef.current) {
+      window.clearTimeout(floatingBubbleCloseTimerRef.current);
+      floatingBubbleCloseTimerRef.current = null;
+    }
+  }
+
+  function scheduleFloatingBubbleFade() {
+    clearFloatingBubbleTimers();
+    setFloatingBubbleFading(false);
+
+    floatingBubbleStartFadeTimerRef.current = window.setTimeout(() => {
+      setFloatingBubbleFading(true);
+
+      floatingBubbleCloseTimerRef.current = window.setTimeout(() => {
+        setFloatingBubbleVisible(false);
+        setFloatingBubbleFading(false);
+      }, 8000);
+    }, 2000);
+  }
+
   function openFloatingBubble(text: string) {
     setFloatingBubbleText(text);
     setFloatingBubbleVisible(true);
-
-    if (floatingBubbleTimerRef.current) {
-      window.clearTimeout(floatingBubbleTimerRef.current);
-    }
-
-    floatingBubbleTimerRef.current = window.setTimeout(() => {
-      setFloatingBubbleVisible(false);
-    }, 25000);
+    scheduleFloatingBubbleFade();
   }
 
   function closeFloatingBubble() {
-    if (floatingBubbleTimerRef.current) {
-      window.clearTimeout(floatingBubbleTimerRef.current);
-    }
+    clearFloatingBubbleTimers();
+    setFloatingBubbleFading(false);
     setFloatingBubbleVisible(false);
+  }
+
+  function handleFloatingBubbleMouseEnter() {
+    clearFloatingBubbleTimers();
+    setFloatingBubbleFading(false);
+  }
+
+  function handleFloatingBubbleMouseLeave() {
+    if (!floatingBubbleVisible) return;
+    scheduleFloatingBubbleFade();
   }
 
   useEffect(() => {
@@ -558,9 +677,7 @@ export default function Students() {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
-      if (floatingBubbleTimerRef.current) {
-        window.clearTimeout(floatingBubbleTimerRef.current);
-      }
+      clearFloatingBubbleTimers();
     };
   }, []);
 
@@ -707,7 +824,7 @@ export default function Students() {
       title="תלמידות"
       description="מסלול מוסיקלי יסודי, אנושי ומסודר לתלמידות — עם שיעור, תרגול, רצף ומערכת תומכת."
     >
-      <main dir="rtl" className="pb-40">
+      <main dir="rtl" className="pb-52 md:pb-56">
         <style>{`
           @keyframes studentsFadeIn {
             from {
@@ -731,7 +848,8 @@ export default function Students() {
 
           .students-fixed-ticker-track {
             width: max-content;
-            animation: studentsTicker 96s linear infinite;
+            animation: studentsTicker 88s linear infinite;
+            will-change: transform;
           }
 
           .students-hero-shell {
@@ -747,6 +865,12 @@ export default function Students() {
               top: var(--students-hero-copy-shift-y);
               max-width: var(--students-hero-copy-max-width);
               margin-inline-start: auto;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .students-fixed-ticker-track {
+              animation-duration: 160s;
             }
           }
         `}</style>
@@ -834,18 +958,22 @@ export default function Students() {
               </section>
             </AppearOnScroll>
 
-            {/* באנר RED2 לכל הרוחב */}
+            {/* באנר אווירה עדין */}
             <AppearOnScroll delay={30}>
-              <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen">
-                <Red2Surface roundedNone className="ring-0 shadow-none">
-                  <div className="mx-auto max-w-6xl px-5 py-7 md:px-8 md:py-8">
-                    <div className="flex justify-center">
-                      <div className="rounded-[1.2rem] bg-black/18 px-8 py-4 text-center text-xl font-bold leading-9 text-foreground md:text-3xl dark:bg-black/26">
+              <section className="-mt-1">
+                <TextureSurface
+                  variant="floor"
+                  className="mx-auto max-w-[1080px] rounded-[1.8rem]"
+                  overlayClassName="bg-white/56 dark:bg-black/46"
+                >
+                  <div className="px-5 py-5 md:px-10 md:py-6">
+                    <div className="mx-auto max-w-4xl rounded-[1.2rem] bg-background/66 px-6 py-4 text-center shadow-[0_12px_26px_rgba(0,0,0,0.10)] ring-1 ring-white/20 backdrop-blur-sm dark:bg-background/34">
+                      <div className="text-lg font-bold leading-8 text-foreground md:text-2xl md:leading-10">
                         {HERO_INFO_BANNER_TEXT}
                       </div>
                     </div>
                   </div>
-                </Red2Surface>
+                </TextureSurface>
               </section>
             </AppearOnScroll>
 
@@ -1350,19 +1478,27 @@ export default function Students() {
 
             {/* מספרים */}
             <AppearOnScroll delay={190}>
-              <section className="relative overflow-hidden rounded-[2rem] bg-primary/10 px-5 py-5 shadow-soft ring-1 ring-primary/15 md:px-7 md:py-6">
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 md:gap-x-10">
-                  {NUMBERS.map((item) => (
-                    <div key={item.label} className="text-center">
-                      <div className="inline-block text-2xl font-bold shimmer-gold md:text-4xl">
-                        {item.value}
-                      </div>
-                      <div className="mt-1 text-xs text-foreground/75 md:text-sm">
-                        {item.label}
-                      </div>
+              <section>
+                <TextureSurface
+                  variant="stars"
+                  className="rounded-[2rem]"
+                  overlayClassName="bg-white/60 dark:bg-black/40"
+                >
+                  <div className="px-5 py-5 md:px-7 md:py-6">
+                    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 md:gap-x-10">
+                      {NUMBERS.map((item) => (
+                        <div key={item.label} className="text-center">
+                          <div className="inline-block text-2xl font-bold shimmer-gold md:text-4xl">
+                            {item.value}
+                          </div>
+                          <div className="mt-1 text-xs text-foreground/75 md:text-sm">
+                            {item.label}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                </TextureSurface>
               </section>
             </AppearOnScroll>
 
@@ -1409,36 +1545,47 @@ export default function Students() {
         <FloatingPresenter
           visible={showMiniPresenter}
           bubbleVisible={floatingBubbleVisible}
+          bubbleFading={floatingBubbleFading}
           text={currentFloatingText}
           speaking={speakingKey === "floating-presenter"}
           onSpeak={() =>
             toggleSpeech("floating-presenter", currentFloatingText)
           }
           onClose={closeFloatingBubble}
+          onBubbleMouseEnter={handleFloatingBubbleMouseEnter}
+          onBubbleMouseLeave={handleFloatingBubbleMouseLeave}
         />
 
-        {/* טיקר קבוע בתחתית - גבוה, תלת מימדי, בלופ רציף */}
-        <div className="fixed bottom-0 left-0 right-0 z-30 overflow-hidden border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.28)]">
-          <Red2Surface roundedNone className="ring-0 shadow-none">
-            <div className="students-fixed-ticker-track flex items-center gap-8 px-4 py-4 md:py-5">
+        {/* טיקר קבוע - צר יותר, מעט מורם ועם שקיפות עדינה */}
+        <div className="fixed bottom-4 left-1/2 z-30 w-[min(1180px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-full border border-white/10 shadow-[0_16px_40px_rgba(0,0,0,0.24)] backdrop-blur-sm md:bottom-6">
+          <TextureSurface
+            variant="starsRed"
+            roundedNone
+            className="rounded-full ring-0 shadow-none"
+            overlayClassName="bg-white/36 dark:bg-black/34"
+          >
+            <div className="students-fixed-ticker-track flex items-center gap-5 px-4 py-2.5 md:gap-6 md:px-5 md:py-3">
               {[...TESTIMONIALS, ...TESTIMONIALS].map((item, index) => (
                 <div
                   key={`${item.key}-${index}`}
-                  className="shrink-0 rounded-full border border-white/10 bg-background/84 px-6 py-3 text-xl font-bold text-foreground/95 backdrop-blur md:text-2xl"
+                  className="shrink-0 rounded-full border border-white/10 bg-background/58 px-4 py-2 text-sm backdrop-blur-md md:px-5 md:text-base"
                   style={{
                     boxShadow:
-                      "0 10px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.10)",
+                      "0 8px 22px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.10)",
                   }}
                 >
-                  <span className="font-extrabold text-foreground">
+                  <span className="font-extrabold text-primary">
                     {item.name}
                   </span>
-                  <span className="mx-3 text-primary">•</span>
-                  <span>{item.quote}</span>
+                  {item.context ? (
+                    <span className="mx-2 text-foreground/55">· {item.context}</span>
+                  ) : null}
+                  <span className="mx-2 text-primary/70">—</span>
+                  <span className="text-foreground/82">{item.quote}</span>
                 </div>
               ))}
             </div>
-          </Red2Surface>
+          </TextureSurface>
         </div>
 
         <Dialog open={openSmartSystem} onOpenChange={setOpenSmartSystem}>
