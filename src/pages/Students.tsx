@@ -1527,7 +1527,7 @@ export default function Students() {
               >
                 <div className="font-semibold">דמו מערכת התלמידות</div>
                 <div className="mt-1 text-sm text-muted-foreground">
-                  לצפייה בהדגמות, צילומי מסך והסבר חזותי.
+                  לצפייה בהדגמות על ידי צילומי מסך והסבר חזותי.
                 </div>
               </a>
             </div>
