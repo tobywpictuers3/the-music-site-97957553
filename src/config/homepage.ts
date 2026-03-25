@@ -10,7 +10,7 @@
  * 4) טקסטים כלליים של ההירו והמגיש
  *
  * חשוב:
- * left = נקודת עיגון של מרכז התחתית של הדמות
+ * left = נקודת עית של הדמות
  * bottom = גובה הבסיס של הדמות מהרצפה
  * width = גודל הדמות
  */
@@ -24,39 +24,17 @@ export type CharacterKey =
   | "guitar"
   | "drums"
   | "saxophone"
-  | "violin";
+  | "violin"
+  | "presenter";
 
 export type StagePlacement = {
-  /**
-   * עוגן אופקי של מרכז התחתית
-   * מזיז ימינה / שמאלה
-   */
   left: string;
-
-  /**
-   * גובה בסיס הדמות מהרצפה
-   * מזיז למעלה / למטה
-   */
   bottom: string;
-
-  /**
-   * גודל הדמות
-   * מגדיל / מקטין
-   */
   width: string;
-
-  /**
-   * סדר שכבות
-   */
   zIndex: number;
 };
 
 export type SignBox = {
-  /**
-   * אזור הכיתוב בתוך השלט
-   * top  = למעלה / למטה
-   * left = ימינה / שמאלה
-   */
   top: string;
   left: string;
   width: string;
@@ -70,20 +48,18 @@ export type StageCharacter = {
   stage: StagePlacement;
   signBox: SignBox;
   quote: string;
+  labelMode?: "overlay" | "badge";
 };
 
 export const STAGE_CHARACTERS: StageCharacter[] = [
-  /**
-   * 1 — פסנתר — הכי שמאלי, נמוך
-   */
   {
     title: "תלמידות",
     href: "/students",
     character: "piano",
     stage: {
-      left: "6.5%",
+      left: "6%",
       bottom: "42.5%",
-      width: "28.5%",
+      width: "27.5%",
       zIndex: 12,
     },
     signBox: {
@@ -94,19 +70,16 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     },
     quote:
       "מרחב שמחבר בין לימוד, תרגול, התקדמות וקשר אישי — בצורה חיה ונעימה.",
+    labelMode: "overlay",
   },
-
-  /**
-   * 2 — גיטרה חשמלית — שמאל-מרכז
-   */
   {
     title: "תזמורות",
     href: "/orchestras",
     character: "eguitar",
     stage: {
-      left: "26%",
-      bottom: "50.5%",
-      width: "22.5%",
+      left: "21.5%",
+      bottom: "50%",
+      width: "21.75%",
       zIndex: 15,
     },
     signBox: {
@@ -117,11 +90,8 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     },
     quote:
       "הרכבים, סגנונות ואפשרויות שמתאימים לאירוע שלכם — בלי להסתבך.",
+    labelMode: "overlay",
   },
-
-  /**
-   * 3 — גיטרה קלאסית — מעט ימינה מ-2, קצת יותר גבוהה
-   */
   {
     title: "אודות",
     href: "/about",
@@ -129,7 +99,7 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     stage: {
       left: "35%",
       bottom: "55.5%",
-      width: "22.5%",
+      width: "22%",
       zIndex: 16,
     },
     signBox: {
@@ -140,11 +110,8 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     },
     quote:
       "הסיפור, הדרך והאני מאמין של Toby Music — במקום אחד, ברור ומדויק.",
+    labelMode: "overlay",
   },
-
-  /**
-   * 4 — תופים — במרכז, הכי דומיננטי
-   */
   {
     title: "תווים",
     href: "/sheets",
@@ -152,7 +119,7 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     stage: {
       left: "50.5%",
       bottom: "60.5%",
-      width: "30.5%",
+      width: "30%",
       zIndex: 11,
     },
     signBox: {
@@ -163,19 +130,16 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     },
     quote:
       "ספריית תווים מסודרת, נוחה ונעימה לעין — כדי להגיע מהר למה שצריך.",
+    labelMode: "overlay",
   },
-
-  /**
-   * 5 — סקסופון — ימין-מרכז
-   */
   {
     title: "בלוגים",
     href: "/blog",
     character: "saxophone",
     stage: {
-      left: "69%",
+      left: "66.5%",
       bottom: "52.5%",
-      width: "20.75%",
+      width: "20.5%",
       zIndex: 15,
     },
     signBox: {
@@ -186,20 +150,17 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
     },
     quote:
       "טיפים, מחשבות, רעיונות והשראה מוזיקלית שנעים לחזור אליה שוב.",
+    labelMode: "overlay",
   },
-
-  /**
-   * 6 — כינור — הכי ימני, נמוך
-   */
   {
-    title: "צור קשר",
-    href: "/contact",
+    title: "הופעות",
+    href: "/performances",
     character: "violin",
     stage: {
-      left: "83%",
-      bottom: "40%",
-      width: "22.25%",
-      zIndex: 12,
+      left: "80%",
+      bottom: "44.5%",
+      width: "19.25%",
+      zIndex: 13,
     },
     signBox: {
       top: "4.5%",
@@ -208,7 +169,28 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
       height: "18%",
     },
     quote:
+      "יומן הופעות, חוויה מוסיקלית והזמנה מסודרת — במקום אחד ברור.",
+    labelMode: "overlay",
+  },
+  {
+    title: "צור קשר",
+    href: "/contact",
+    character: "presenter",
+    stage: {
+      left: "91.5%",
+      bottom: "36.5%",
+      width: "15.5%",
+      zIndex: 12,
+    },
+    signBox: {
+      top: "0%",
+      left: "0%",
+      width: "100%",
+      height: "100%",
+    },
+    quote:
       "רוצה לשאול, להתייעץ או להזמין? כאן מתחילים שיחה פשוטה ונעימה.",
+    labelMode: "badge",
   },
 ];
 
@@ -218,12 +200,8 @@ export const STAGE_CHARACTERS: StageCharacter[] = [
 export const HERO_TEXT = {
   subtitle: "המוזיקה מתחילה",
   linkWord: "כאן",
-  /**
-   * יעד הגלילה של "כאן"
-   * אם תרצי להעביר למקום אחר — מחליפים רק כאן.
-   */
   linkHref: `#${GUIDE_SECTION_ID}`,
-  supportLine: "תזמורות, תלמידות, תווים ותוכן — במקום אחד.",
+  supportLine: "הופעות, תזמורות, תלמידות, תווים ותוכן — במקום אחד.",
   sloganPrefix: "אומנות ואמינות —",
   sloganAccent: "זו יצירה",
 };
@@ -241,6 +219,7 @@ export const GUIDE_PRESENTER = {
  * תוכן הבאנר הרץ
  */
 export const MARQUEE_ITEMS = [
+  "הופעות",
   "תזמורות",
   "תלמידות",
   "תווים",
