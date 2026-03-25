@@ -1,50 +1,117 @@
+import { ANGLE_SECTORS } from "./orbit.constants";
 import type {
+  PresenterAssets,
   PresenterPoseKey,
   ResolvedPresenterAssets,
 } from "./orbit.types";
-import { ORBIT_SETTINGS } from "./orbit.constants";
 
-type OrbitPresenterProps = {
-  presenterAssets: ResolvedPresenterAssets;
-  activePose: PresenterPoseKey;
-  alt?: string;
-  variant?: "inner" | "home";
-};
+export function normalizeAngle(angle: number) {
+  const normalized = angle % 360;
+  return normalized < 0 ? normalized + 360 : normalized;
+}
 
-const ORDER: PresenterPoseKey[] = [
-  "front",
-  "upRight",
-  "right",
-  "downRight",
-  "downLeft",
-  "left",
-  "upLeft",
-];
+/**
+ * ממיר וקטור רגיל לזווית שעובדת כמו שעון:
+ * 0 = מעלה
+ * 90 = ימין
+ * 180 = מטה
+ * 270 = שמאל
+ */
+export function angleFromTopClockwise(dx: number, dy: number) {
+  return normalizeAngle((Math.atan2(dy, dx) * 180) / Math.PI + 90);
+}
 
-export default function OrbitPresenter({
-  presenterAssets,
-  activePose,
-  alt = "המגיש",
-}: OrbitPresenterProps) {
-  return (
-    <div className="absolute left-1/2 top-1/2 z-[12] -translate-x-1/2 -translate-y-1/2">
-      <div className="orbit-avatar-wrap orbit-avatar-float relative flex items-center justify-center">
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.62),rgba(0,0,0,0.10)_72%,transparent)]" />
-        <div className="absolute bottom-4 h-20 w-44 rounded-full bg-primary/16 blur-3xl md:h-24 md:w-56" />
+export function resolvePoseFromAngle(angle: number): PresenterPoseKey {
+  const normalized = normalizeAngle(angle);
 
-        {ORDER.map((key) => (
-          <img
-            key={key}
-            src={presenterAssets[key]}
-            alt={alt}
-            className="absolute inset-0 z-10 h-full w-full object-contain drop-shadow-[0_18px_42px_rgba(0,0,0,0.34)] transition-opacity"
-            style={{
-              opacity: activePose === key ? 1 : 0,
-              transitionDuration: `${ORBIT_SETTINGS.avatarSwitchMs}ms`,
-            }}
-          />
-        ))}
-      </div>
-    </div>
+  for (const sector of ANGLE_SECTORS) {
+    if (normalized >= sector.from && normalized < sector.to) {
+      return sector.pose;
+    }
+  }
+
+  return "front";
+}
+
+function firstDefined(...values: Array<string | undefined>) {
+  return values.find(Boolean) ?? "";
+}
+
+/**
+ * תאימות לאחור:
+ * גם אם בקונפיגים הישנים עדיין יש front / leftMid / leftSide / rightMid / rightSide / up / down
+ * המנוע החדש מתרגם אותם ל-6 הכיוונים החדשים.
+ */
+export function buildResolvedPresenterAssets(
+  assets: PresenterAssets
+): ResolvedPresenterAssets {
+  const front = assets.front;
+
+  return {
+    front,
+    upRight: firstDefined(
+      assets.upRight,
+      assets.rightSide,
+      assets.rightMid,
+      assets.up,
+      front
+    ),
+    right: firstDefined(
+      assets.right,
+      assets.rightMid,
+      assets.rightSide,
+      front
+    ),
+    downRight: firstDefined(
+      assets.downRight,
+      assets.down,
+      assets.rightMid,
+      front
+    ),
+    downLeft: firstDefined(
+      assets.downLeft,
+      assets.down,
+      assets.leftMid,
+      front
+    ),
+    left: firstDefined(
+      assets.left,
+      assets.leftMid,
+      assets.leftSide,
+      front
+    ),
+    upLeft: firstDefined(
+      assets.upLeft,
+      assets.leftSide,
+      assets.leftMid,
+      assets.up,
+      front
+    ),
+  };
+}
+
+export function resolveAssetByAngle(
+  angle: number,
+  assets: ResolvedPresenterAssets
+) {
+  const pose = resolvePoseFromAngle(angle);
+  return {
+    pose,
+    src: assets[pose] ?? assets.front,
+  };
+}
+
+export async function preloadImages(urls: string[]) {
+  await Promise.all(
+    urls
+      .filter(Boolean)
+      .map((src) => {
+        const img = new Image();
+        img.src = src;
+        if (typeof img.decode === "function") {
+          return img.decode().catch(() => undefined);
+        }
+        return Promise.resolve();
+      })
   );
 }
