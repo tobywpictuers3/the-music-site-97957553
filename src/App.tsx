@@ -22,7 +22,6 @@ import StudentsDemo from "./pages/StudentsDemo";
 import Blog from "./pages/blog";
 import Sheets from "./pages/sheets";
 import NotFound from "./pages/NotFound";
-import OrbitSystemDemo from "@/orbit-system/OrbitSystemDemo";
 
 const queryClient = new QueryClient();
 
@@ -52,7 +51,6 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/sheets" element={<Sheets />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/orbit-demo" element={<OrbitSystemDemo />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
