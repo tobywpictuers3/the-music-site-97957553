@@ -1,8 +1,9 @@
 import type { CSSProperties, ReactNode, RefObject } from "react";
+import stageBgLight from "@/assets/orbit-system/stage/light/stage-bg.webp";
+import stageBgDark from "@/assets/orbit-system/stage/dark/stage-bg.webp";
 import HeroCenterPresenter from "./HeroCenterPresenter";
 import OrbitWheel from "./OrbitWheel";
 import { useOrbitHeroState } from "./useOrbitHeroState";
-import { getThemeAssets } from "./theme.assets";
 import type { PageConfig, PresenterConfig, ThemeMode } from "./orbit.types";
 
 type OrbitHeroLayoutProps = {
@@ -20,8 +21,6 @@ export default function OrbitHeroLayout({
   heroRef,
   headerOverlay,
 }: OrbitHeroLayoutProps) {
-  const assets = getThemeAssets(themeMode);
-
   const {
     rotationDeg,
     activeItemId,
@@ -50,6 +49,10 @@ export default function OrbitHeroLayout({
     "--orbit-header-offset": `${page.hero.headerOffsetPx}px`,
   } as CSSProperties;
 
+  const titleColorsDark = ["#f3d08a", "#ffffff", "#d89f45"];
+  const titleColorsLight = ["#8f5d18", "#2a1a0f", "#bf8330"];
+  const titleColors = themeMode === "dark" ? titleColorsDark : titleColorsLight;
+
   return (
     <section
       ref={heroRef}
@@ -63,11 +66,26 @@ export default function OrbitHeroLayout({
         }}
       >
         <img
-          src={assets.stageBg}
+          src={stageBgLight}
           alt=""
           aria-hidden="true"
           fetchPriority="high"
-          className="h-full w-full object-cover object-center select-none"
+          className="absolute inset-0 h-full w-full object-cover object-center select-none"
+          style={{
+            opacity: themeMode === "light" ? 1 : 0,
+            transition: "opacity 700ms ease",
+          }}
+        />
+        <img
+          src={stageBgDark}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-center select-none"
+          style={{
+            opacity: themeMode === "dark" ? 1 : 0,
+            transition: "opacity 700ms ease",
+          }}
         />
       </div>
 
@@ -76,18 +94,9 @@ export default function OrbitHeroLayout({
         style={{
           background:
             themeMode === "dark"
-              ? "linear-gradient(to bottom, rgba(6,8,16,0.30), rgba(6,8,16,0.18) 28%, rgba(6,8,16,0.34) 72%, rgba(6,8,16,0.54))"
-              : "linear-gradient(to bottom, rgba(255,255,255,0.22), rgba(255,255,255,0.10) 28%, rgba(255,255,255,0.16) 72%, rgba(255,255,255,0.34))",
-        }}
-      />
-
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            themeMode === "dark"
-              ? "radial-gradient(circle at 72% 44%, rgba(255,255,255,0.08), transparent 28%)"
-              : "radial-gradient(circle at 72% 44%, rgba(255,255,255,0.38), transparent 28%)",
+              ? "linear-gradient(to bottom, rgba(6,8,16,0.28), rgba(6,8,16,0.16) 28%, rgba(6,8,16,0.26) 72%, rgba(6,8,16,0.44))"
+              : "linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(255,255,255,0.08) 28%, rgba(255,255,255,0.14) 72%, rgba(255,255,255,0.28))",
+          transition: "background 700ms ease",
         }}
       />
 
@@ -96,14 +105,56 @@ export default function OrbitHeroLayout({
       ) : null}
 
       <div
-        className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(420px,640px)_minmax(0,760px)] lg:px-10"
+        className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,760px)_minmax(420px,760px)] lg:px-10"
         style={{
           paddingTop: "calc(var(--orbit-header-offset) + 20px)",
           paddingBottom: "32px",
         }}
       >
+        <div className="flex items-center justify-center lg:justify-start">
+          <div className="mx-auto w-full max-w-[760px] text-right">
+            <h1 className="space-y-2 text-[clamp(2rem,4.1vw,4.35rem)] font-bold leading-[1.08]">
+              {page.hero.titleLines.map((line, index) => (
+                <span
+                  key={index}
+                  className="block"
+                  style={{
+                    color: titleColors[index % titleColors.length],
+                    textShadow:
+                      themeMode === "dark"
+                        ? "0 4px 24px rgba(0,0,0,0.34)"
+                        : "0 3px 14px rgba(255,255,255,0.18)",
+                    transition: "color 700ms ease, text-shadow 700ms ease",
+                  }}
+                >
+                  {line}
+                </span>
+              ))}
+            </h1>
+
+            <div
+              className="mt-6 max-w-[42rem] space-y-3 text-[clamp(1rem,1.45vw,1.2rem)] leading-8"
+              style={{
+                color:
+                  themeMode === "dark"
+                    ? "rgba(255,255,255,0.92)"
+                    : "rgba(26,26,26,0.82)",
+                textShadow:
+                  themeMode === "dark"
+                    ? "0 4px 18px rgba(0,0,0,0.26)"
+                    : "0 2px 10px rgba(255,255,255,0.14)",
+                transition: "color 700ms ease, text-shadow 700ms ease",
+              }}
+            >
+              {page.hero.introLines.map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="relative flex items-center justify-center">
-          <div className="relative w-full max-w-[720px]">
+          <div className="relative w-full max-w-[760px]">
             <OrbitWheel
               items={page.orbit.items}
               rotationDeg={rotationDeg}
@@ -118,45 +169,6 @@ export default function OrbitHeroLayout({
               presenter={presenter}
               activeLook={activeLook}
             />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center">
-          <div className="mx-auto w-full max-w-[760px] text-center">
-            <h1
-              className="space-y-2 text-[clamp(2rem,4.1vw,4.25rem)] font-bold leading-[1.08]"
-              style={{
-                color: themeMode === "dark" ? "#ffffff" : "#1a1a1a",
-                textShadow:
-                  themeMode === "dark"
-                    ? "0 4px 24px rgba(0,0,0,0.36)"
-                    : "0 4px 18px rgba(255,255,255,0.18)",
-              }}
-            >
-              {page.hero.titleLines.map((line, index) => (
-                <span key={index} className="block">
-                  {line}
-                </span>
-              ))}
-            </h1>
-
-            <div
-              className="mx-auto mt-6 max-w-[42rem] space-y-3 text-[clamp(1rem,1.45vw,1.2rem)] leading-8"
-              style={{
-                color:
-                  themeMode === "dark"
-                    ? "rgba(255,255,255,0.92)"
-                    : "rgba(26,26,26,0.82)",
-                textShadow:
-                  themeMode === "dark"
-                    ? "0 4px 18px rgba(0,0,0,0.26)"
-                    : "0 2px 10px rgba(255,255,255,0.14)",
-              }}
-            >
-              {page.hero.introLines.map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
-            </div>
           </div>
         </div>
       </div>
