@@ -16,51 +16,56 @@ export default function SpeechBubbleLayer({
 
   return (
     <div
-      className="absolute left-[calc(100%+14px)] bottom-[110px] z-50"
+      className="absolute left-[calc(100%+18px)] bottom-[122px] z-50"
       style={{
         transform: `translate(${bubble.offsetX ?? 0}px, ${bubble.offsetY ?? 0}px)`,
       }}
     >
       <div
-        className="relative overflow-hidden rounded-[28px] border px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-all"
+        className="relative overflow-visible rounded-[28px] border px-6 py-5 shadow-[0_22px_54px_rgba(0,0,0,0.24)] backdrop-blur-sm transition-all"
         style={{
-          maxWidth: `${bubble.maxWidthPx ?? 320}px`,
+          width: `min(${bubble.maxWidthPx ?? 560}px, 36vw)`,
+          minWidth: "360px",
           borderColor:
             themeMode === "dark"
-              ? "rgba(255,255,255,0.18)"
+              ? "rgba(255,255,255,0.20)"
               : "rgba(120,30,30,0.18)",
           backgroundColor:
             themeMode === "dark"
-              ? "rgba(92, 18, 32, 0.74)"
-              : "rgba(158, 41, 55, 0.70)",
+              ? "rgba(92, 18, 32, 0.80)"
+              : "rgba(158, 41, 55, 0.74)",
           transitionDuration: `${bubble.enterMs ?? 180}ms`,
         }}
       >
-        {/* רקע כוכבים אדום 80% */}
         <span
-          className="absolute inset-0"
+          className="absolute inset-0 rounded-[28px]"
           style={{
             backgroundImage: `url(${assets.bubbleStarsRed})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.8,
+            opacity: 0.42,
           }}
         />
 
-        <div
-          className="relative z-10 text-[0.98rem] leading-7"
-          style={{ color: "#ffffff" }}
-        >
-          {bubble.text}
+        <div className="relative z-10 text-right">
+          <div
+            className="text-[1rem] leading-8"
+            style={{
+              color: "#ffffff",
+              textShadow: "0 2px 14px rgba(0,0,0,0.24)",
+            }}
+          >
+            {bubble.text}
+          </div>
         </div>
 
         <span
-          className="absolute bottom-5 -left-2 h-4 w-4 rotate-45 rounded-[4px]"
+          className="absolute bottom-7 -left-3 h-5 w-5 rotate-45 rounded-[4px]"
           style={{
             backgroundColor:
               themeMode === "dark"
-                ? "rgba(92, 18, 32, 0.80)"
-                : "rgba(158, 41, 55, 0.78)",
+                ? "rgba(92, 18, 32, 0.86)"
+                : "rgba(158, 41, 55, 0.82)",
           }}
         />
       </div>
