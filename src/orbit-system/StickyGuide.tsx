@@ -12,6 +12,7 @@ type StickyGuideProps = {
   activeBubble: BubbleConfig | null;
   bannerHeightPx: number;
   bannerBottomOffsetPx: number;
+  dockOffsetPx?: number;
 };
 
 export default function StickyGuide({
@@ -21,14 +22,19 @@ export default function StickyGuide({
   activeBubble,
   bannerHeightPx,
   bannerBottomOffsetPx,
+  dockOffsetPx = 0,
 }: StickyGuideProps) {
   return (
     <div
-      className="pointer-events-none fixed left-[clamp(10px,2vw,28px)] z-[70] transition-all duration-300"
+      className="pointer-events-none fixed left-[clamp(8px,1.4vw,22px)] z-[70] hidden xl:block"
       style={{
-        bottom: `${bannerHeightPx + bannerBottomOffsetPx + 16}px`,
+        bottom: `${bannerHeightPx + bannerBottomOffsetPx + 8 + dockOffsetPx}px`,
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(18px)",
+        transform: visible
+          ? "translateY(0px)"
+          : "translateY(-140px)",
+        transition:
+          "bottom 120ms linear, opacity 380ms ease, transform 520ms cubic-bezier(0.22,1,0.36,1)",
       }}
       aria-hidden={!visible}
     >
@@ -36,10 +42,11 @@ export default function StickyGuide({
         <img
           src={presenter.looks.default.src}
           alt={presenter.looks.default.alt}
-          className="h-auto object-contain drop-shadow-[0_10px_24px_rgba(0,0,0,0.22)]"
+          className="h-auto object-contain"
           style={{
-            width: presenter.sizing.stickyWidth,
-            maxWidth: presenter.sizing.stickyMaxWidth,
+            width: "clamp(82px, 7.8vw, 116px)",
+            maxWidth: "116px",
+            filter: "drop-shadow(0 10px 22px rgba(0,0,0,0.24))",
           }}
         />
 
