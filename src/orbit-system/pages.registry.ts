@@ -1,11 +1,11 @@
 /**
- * מקור האמת של כל הדפים.
- * כאן מגדירים:
- * - איזו דמות שייכת לכל דף
- * - טקסטי ההירו
+ * מקור האמת של כל דפי הדמו.
+ * כאן מוגדרים:
+ * - טקסטי הירו
  * - 5 העיגולים
- * - בועות
- * - באנר נוסע
+ * - מהירות הסיבוב
+ * - הבועות של המגיש הקבוע
+ * - הבאנר הנוסע
  */
 
 import type { OrbitItemConfig, PageConfig, PageId } from "./orbit.types";
@@ -39,7 +39,7 @@ function createBasePage(
     },
     orbit: {
       items: createGenericOrbitItems(),
-      rotationSpeedDegPerSec: 10,
+      rotationSpeedDegPerSec: 1.15,
       defaultLook: "default",
     },
     stickyGuide: {
@@ -47,25 +47,25 @@ function createBasePage(
       bubbles: [
         {
           id: "bubble-1",
-          text: "זו בועת דמה ראשונה. כאן אחר כך ייכנס הטקסט של הדף.",
-          showFromAfterHeroPx: 0,
-          hideAfterHeroPx: 460,
-          maxWidthPx: 320,
-          offsetX: 18,
-          offsetY: -8,
-          enterMs: 180,
-          exitMs: 160,
+          text: "זו בועת דמה ראשונה. כאן יופיע הטקסט הקבוע שמלווה את תחילת הגלילה.",
+          showFromAfterHeroPx: 30,
+          hideAfterHeroPx: 620,
+          maxWidthPx: 520,
+          offsetX: 20,
+          offsetY: -2,
+          enterMs: 220,
+          exitMs: 180,
         },
         {
           id: "bubble-2",
-          text: "זו בועת דמה שנייה. אפשר להגדיר לכל דף זמנים אחרים לגמרי.",
+          text: "זו בועת דמה שנייה. אפשר להחליף לכל דף נוסח אחר, בלי לשנות את המבנה.",
           showFromAfterHeroPx: 760,
-          hideAfterHeroPx: 1320,
-          maxWidthPx: 340,
-          offsetX: 24,
-          offsetY: 0,
-          enterMs: 180,
-          exitMs: 160,
+          hideAfterHeroPx: 1500,
+          maxWidthPx: 540,
+          offsetX: 26,
+          offsetY: 6,
+          enterMs: 220,
+          exitMs: 180,
         },
       ],
     },
@@ -74,17 +74,17 @@ function createBasePage(
       items: [
         "טקסט נע לדוגמה",
         "כאן יוגדר תוכן שונה לכל דף",
-        "הבאנר מופיע יחד עם המגיש הקבוע",
+        "הבאנר מופיע כבר בתחילת הגלילה",
       ],
-      heightPx: 84,
-      bottomOffsetPx: 18,
-      opacity: 0.88,
-      loopDurationSec: 28,
+      heightPx: 94,
+      bottomOffsetPx: 32,
+      opacity: 0.92,
+      loopDurationSec: 34,
     },
   };
 }
 
-export const pagesRegistry: Record<PageId, PageConfig> = {
+const basePages: Record<PageId, PageConfig> = {
   home: createBasePage("home", "/", "avatar"),
   contact: createBasePage("contact", "/contact", "avatar"),
   students: createBasePage("students", "/students", "piano"),
@@ -95,8 +95,65 @@ export const pagesRegistry: Record<PageId, PageConfig> = {
   sheetMusic: createBasePage("sheetMusic", "/sheet-music", "classicalGuitar"),
 };
 
+basePages.about = {
+  ...basePages.about,
+  hero: {
+    titleLines: ["כותרת ראשית לדף", "עוד שורת כותרת"],
+    introLines: [
+      "זהו טקסט דמה נעים לקריאה בתוך אזור שני השליש.",
+      "אחר כך תוכלי להחליף אותו לתוכן המדויק של הדף.",
+    ],
+    headerOffsetPx: 96,
+  },
+  orbit: {
+    ...basePages.about.orbit,
+    rotationSpeedDegPerSec: 1.05,
+  },
+  stickyGuide: {
+    idleLook: "default",
+    bubbles: [
+      {
+        id: "about-bubble-1",
+        text: "זו בועת דמה ראשונה. כאן יופיע הטקסט שמגיע מיד כשמתחילה הגלילה מההירו.",
+        showFromAfterHeroPx: 24,
+        hideAfterHeroPx: 640,
+        maxWidthPx: 560,
+        offsetX: 18,
+        offsetY: -4,
+        enterMs: 240,
+        exitMs: 180,
+      },
+      {
+        id: "about-bubble-2",
+        text: "זהו אזור תוכן לבדיקה. כאן ייכנס בהמשך התוכן האמיתי של הדף, וכל חלק יוכל להשתייך לעיגול 1, 2, 3, 4 או 5.",
+        showFromAfterHeroPx: 760,
+        hideAfterHeroPx: 1600,
+        maxWidthPx: 620,
+        offsetX: 22,
+        offsetY: 2,
+        enterMs: 240,
+        exitMs: 180,
+      },
+    ],
+  },
+  tickerBanner: {
+    enabled: true,
+    items: [
+      "טקסט נע לדוגמה",
+      "כאן יוגדר תוכן שונה לכל דף",
+      "הבאנר מופיע יחד עם המגיש הקבוע",
+      "הגלילה מההירו מפעילה את המערכת מיד",
+    ],
+    heightPx: 96,
+    bottomOffsetPx: 34,
+    opacity: 0.92,
+    loopDurationSec: 36,
+  },
+};
+
+export const pagesRegistry: Record<PageId, PageConfig> = basePages;
+
 /**
  * דף הדמו המחובר הראשון.
- * אפשר להחליף אחר כך לעמוד אחר.
  */
 export const orbitDemoPageId: PageId = "about";
