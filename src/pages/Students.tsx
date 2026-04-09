@@ -98,17 +98,6 @@ const ABOUT_TEACHING_HREF = "/about#teaching";
 const HERO_PIANO_QUOTE =
   "כאן לא בונים רק שיעור טוב, אלא דרך יציבה ומוזיקלית שנשארת לאורך זמן — עם רמה, רצף, הקשבה וליווי אמיתי.";
 
-const FLOATING_BUBBLES_BY_SECTION: Record<string, string> = {
-  "studies-section":
-    "כאן תחומי הלימוד מקבלים צורה ברורה: מה מרכזי, מה משלים, ואיך הכל מסתדר למסלול אחד שמחזיק תלמידה לאורך זמן.",
-  "belief-section":
-    "מבחינתי מוסיקה לא נבנית מקיצורי דרך. עומק, רגישות ומשמעת יכולים לחיות יחד — וזה מה שמאפשר התקדמות אמיתית.",
-  "process-section":
-    "כאן כבר רואים את התהליך בפועל: שיעור, תרגול, חומרים ורצף. לא רק השראה — אלא דרך עבודה שמתקדמת באמת.",
-  "system-section":
-    "המערכת לא מחליפה את השיעור — היא מחזיקה את הלמידה גם בין המפגשים, בצורה ברורה, נגישה ונעימה לעין.",
-};
-
 const TESTIMONIALS: QuoteItem[] = [
   {
     key: "t1",
@@ -509,93 +498,13 @@ function SpeechBubble({
   );
 }
 
-type FloatingPresenterProps = {
-  visible: boolean;
-  bubbleVisible: boolean;
-  bubbleFading: boolean;
-  text: string;
-  speaking: boolean;
-  onSpeak: () => void;
-  onClose: () => void;
-  onBubbleMouseEnter: () => void;
-  onBubbleMouseLeave: () => void;
-};
-
-function FloatingPresenter({
-  visible,
-  bubbleVisible,
-  bubbleFading,
-  text,
-  speaking,
-  onSpeak,
-  onClose,
-  onBubbleMouseEnter,
-  onBubbleMouseLeave,
-}: FloatingPresenterProps) {
-  return (
-    <div
-      className={cn(
-        "pointer-events-none fixed bottom-24 right-5 z-50 hidden transition-all duration-300 xl:block",
-        visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-      )}
-    >
-      <div
-        className={cn(
-          "pointer-events-auto flex items-end gap-4 transition-transform duration-300",
-          bubbleVisible ? "-translate-x-6" : "translate-x-0"
-        )}
-      >
-        <div
-          className={cn(
-            "transition-all",
-            bubbleVisible
-              ? bubbleFading
-                ? "translate-y-2 opacity-0 [transition-duration:8000ms]"
-                : "translate-y-0 opacity-100 duration-300"
-              : "pointer-events-none translate-y-4 opacity-0 duration-300"
-          )}
-        >
-          <SpeechBubble
-            tail="right"
-            onClose={onClose}
-            className="max-w-[360px]"
-            onMouseEnter={onBubbleMouseEnter}
-            onMouseLeave={onBubbleMouseLeave}
-          >
-            <div className="students-glow-text text-right text-lg">“{text}”</div>
-          </SpeechBubble>
-        </div>
-
-        <div className="flex flex-col items-center gap-3">
-          <AudioIconButton speaking={speaking} onClick={onSpeak} />
-          <img
-            src={studentsPresenterMain}
-            alt="מגישה מלווה"
-            className="h-auto w-[120px] object-contain drop-shadow-[0_18px_40px_rgba(0,0,0,0.26)]"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Students() {
   const [openSmartSystem, setOpenSmartSystem] = useState(false);
   const [tIndex, setTIndex] = useState(0);
   const [activeOrbitId, setActiveOrbitId] = useState<OrbitItemId>("1");
   const [speakingKey, setSpeakingKey] = useState<string | null>(null);
 
-  const [showMiniPresenter, setShowMiniPresenter] = useState(false);
-  const [floatingBubbleText, setFloatingBubbleText] = useState("");
-  const [floatingBubbleVisible, setFloatingBubbleVisible] = useState(false);
-  const [floatingBubbleFading, setFloatingBubbleFading] = useState(false);
-
   const testimonialPauseRef = useRef(false);
-  const floatingFadeStartTimerRef = useRef<number | null>(null);
-  const floatingHideTimerRef = useRef<number | null>(null);
-  const floatingHoverSpeakTimerRef = useRef<number | null>(null);
-  const floatingBubbleHoverRef = useRef(false);
 
   function stopSpeech() {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -635,86 +544,9 @@ export default function Students() {
     speakText(key, text);
   }
 
-  function clearFloatingAutoFadeTimers() {
-    if (floatingFadeStartTimerRef.current) {
-      window.clearTimeout(floatingFadeStartTimerRef.current);
-      floatingFadeStartTimerRef.current = null;
-    }
-
-    if (floatingHideTimerRef.current) {
-      window.clearTimeout(floatingHideTimerRef.current);
-      floatingHideTimerRef.current = null;
-    }
-  }
-
-  function clearFloatingBubbleTimers() {
-    clearFloatingAutoFadeTimers();
-
-    if (floatingHoverSpeakTimerRef.current) {
-      window.clearTimeout(floatingHoverSpeakTimerRef.current);
-      floatingHoverSpeakTimerRef.current = null;
-    }
-  }
-
-  function scheduleFloatingBubbleFade() {
-    if (floatingBubbleHoverRef.current) return;
-
-    clearFloatingAutoFadeTimers();
-    setFloatingBubbleFading(false);
-
-    floatingFadeStartTimerRef.current = window.setTimeout(() => {
-      setFloatingBubbleFading(true);
-    }, 2000);
-
-    floatingHideTimerRef.current = window.setTimeout(() => {
-      setFloatingBubbleVisible(false);
-      setFloatingBubbleFading(false);
-    }, 10000);
-  }
-
-  function openFloatingBubble(text: string) {
-    setFloatingBubbleText(text);
-    setFloatingBubbleVisible(true);
-    setFloatingBubbleFading(false);
-    scheduleFloatingBubbleFade();
-  }
-
-  function closeFloatingBubble() {
-    clearFloatingBubbleTimers();
-    stopSpeech();
-    setFloatingBubbleVisible(false);
-    setFloatingBubbleFading(false);
-  }
-
-  function handleFloatingBubbleMouseEnter(currentText: string) {
-    floatingBubbleHoverRef.current = true;
-    clearFloatingAutoFadeTimers();
-    setFloatingBubbleFading(false);
-
-    if (floatingHoverSpeakTimerRef.current) {
-      window.clearTimeout(floatingHoverSpeakTimerRef.current);
-    }
-
-    floatingHoverSpeakTimerRef.current = window.setTimeout(() => {
-      speakText("floating-presenter-auto", currentText);
-    }, 2000);
-  }
-
-  function handleFloatingBubbleMouseLeave() {
-    floatingBubbleHoverRef.current = false;
-
-    if (floatingHoverSpeakTimerRef.current) {
-      window.clearTimeout(floatingHoverSpeakTimerRef.current);
-      floatingHoverSpeakTimerRef.current = null;
-    }
-
-    scheduleFloatingBubbleFade();
-  }
-
   useEffect(() => {
     return () => {
       stopSpeech();
-      clearFloatingBubbleTimers();
     };
   }, []);
 
@@ -726,60 +558,6 @@ export default function Students() {
 
     return () => window.clearInterval(id);
   }, []);
-
-  useEffect(() => {
-    function onScroll() {
-      setShowMiniPresenter(window.scrollY > 540);
-    }
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    if (showMiniPresenter && !floatingBubbleText) {
-      openFloatingBubble(FLOATING_BUBBLES_BY_SECTION["studies-section"]);
-    }
-  }, [showMiniPresenter, floatingBubbleText]);
-
-  useEffect(() => {
-    const sectionIds = Object.keys(FLOATING_BUBBLES_BY_SECTION);
-
-    const nodes = sectionIds
-      .map((id) => {
-        const el = document.getElementById(id);
-        return el ? { id, el } : null;
-      })
-      .filter(Boolean) as Array<{ id: string; el: HTMLElement }>;
-
-    if (!nodes.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (!visible) return;
-
-        const matched = nodes.find((item) => item.el === visible.target);
-        if (!matched) return;
-
-        const text = FLOATING_BUBBLES_BY_SECTION[matched.id];
-        if (text && showMiniPresenter) {
-          openFloatingBubble(text);
-        }
-      },
-      {
-        threshold: 0.34,
-        rootMargin: "-8% 0px -18% 0px",
-      }
-    );
-
-    nodes.forEach((item) => observer.observe(item.el));
-    return () => observer.disconnect();
-  }, [showMiniPresenter]);
 
   function scrollToSection(sectionId?: string, orbitId?: OrbitItemId) {
     if (orbitId) setActiveOrbitId(orbitId);
@@ -829,8 +607,6 @@ export default function Students() {
   }, []);
 
   const currentTestimonial = TESTIMONIALS[tIndex] ?? TESTIMONIALS[0];
-  const currentFloatingText =
-    floatingBubbleText || FLOATING_BUBBLES_BY_SECTION["studies-section"];
 
   function handleOrbitItemClick(item: OrbitItemConfig) {
     scrollToSection(item.targetSectionId, item.id);
@@ -843,17 +619,6 @@ export default function Students() {
     >
       <main dir="rtl" className="pb-24">
         <style>{`
-          @keyframes studentsFadeIn {
-            from {
-              opacity: 0;
-              transform: translateY(8px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-
           @keyframes studentsFlipIn {
             from {
               opacity: 0;
@@ -863,11 +628,6 @@ export default function Students() {
               opacity: 1;
               transform: perspective(900px) rotateY(0deg) translateY(0);
             }
-          }
-
-          @keyframes studentsTicker {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
           }
 
           @keyframes studentsTwinkle {
@@ -887,18 +647,9 @@ export default function Students() {
             100% { background-position: 0% 50%; }
           }
 
-          .students-fade-in {
-            animation: studentsFadeIn 420ms ease-out;
-          }
-
           .students-flip-in {
             animation: studentsFlipIn 650ms cubic-bezier(0.19, 1, 0.22, 1);
             transform-style: preserve-3d;
-          }
-
-          .students-marquee-track {
-            width: max-content;
-            animation: studentsTicker 82s linear infinite;
           }
 
           .students-glow-text {
@@ -968,38 +719,18 @@ export default function Students() {
           pageId="students"
           onOrbitItemClick={handleOrbitItemClick}
           controlledActiveItemId={activeOrbitId}
-          disableStickyGuide
         >
           <div className="pb-16">
             <div className="mx-auto max-w-6xl space-y-10 px-6 md:space-y-14">
               <AppearOnScroll delay={18}>
                 <section className="-mt-1 flex justify-center">
-                  <Button asChild size="lg" className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base"
+                  >
                     <a href={CONTACT_STUDENTS_HREF}>לבדיקת התאמה למסלול</a>
                   </Button>
-                </section>
-              </AppearOnScroll>
-
-              <AppearOnScroll delay={24}>
-                <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden">
-                  <StarRedSurface roundedNone ringClassName="shadow-none" className="py-3 md:py-4">
-                    <div className="students-marquee-track flex items-center gap-5 px-4 md:gap-6">
-                      {[...TESTIMONIALS, ...TESTIMONIALS, ...TESTIMONIALS].map(
-                        (item, index) => (
-                          <div
-                            key={`${item.key}-${index}`}
-                            className="shrink-0 rounded-full bg-black/24 px-5 py-2.5 text-sm font-semibold text-foreground/95 ring-1 ring-white/10 backdrop-blur-sm md:px-7 md:py-3 md:text-lg"
-                          >
-                            <span className="students-glow-text font-black text-primary">
-                              {item.name}
-                            </span>
-                            <span className="mx-3 text-foreground/45">—</span>
-                            <span>{item.quote}</span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </StarRedSurface>
                 </section>
               </AppearOnScroll>
 
@@ -1128,7 +859,10 @@ export default function Students() {
                           <li>למי שחשוב לה יחס אישי יחד עם דרישה מקצועית.</li>
                         </ul>
 
-                        <Button asChild className="h-12 rounded-2xl px-5 text-sm font-semibold md:text-base">
+                        <Button
+                          asChild
+                          className="h-12 rounded-2xl px-5 text-sm font-semibold md:text-base"
+                        >
                           <a href={CONTACT_STUDENTS_HREF}>
                             בדיקת התאמה למסלול
                             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -1552,21 +1286,40 @@ export default function Students() {
                       </div>
 
                       <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                        <Button asChild size="lg" className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base">
+                        <Button
+                          asChild
+                          size="lg"
+                          className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base"
+                        >
                           <a href={CONTACT_STUDENTS_HREF}>צור קשר</a>
                         </Button>
 
-                        <Button asChild variant="secondary" size="lg" className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base">
+                        <Button
+                          asChild
+                          variant="secondary"
+                          size="lg"
+                          className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base"
+                        >
                           <a href={STUDENTS_DEMO_HREF}>להדגמה</a>
                         </Button>
 
-                        <Button asChild variant="secondary" size="lg" className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base">
+                        <Button
+                          asChild
+                          variant="secondary"
+                          size="lg"
+                          className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base"
+                        >
                           <a href={STUDENTS_APP_HREF} target="_blank" rel="noreferrer">
                             לכניסה
                           </a>
                         </Button>
 
-                        <Button asChild variant="secondary" size="lg" className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base">
+                        <Button
+                          asChild
+                          variant="secondary"
+                          size="lg"
+                          className="h-12 rounded-2xl px-7 text-sm font-semibold md:text-base"
+                        >
                           <a href={ABOUT_TEACHING_HREF}>להכיר אותי</a>
                         </Button>
                       </div>
@@ -1577,18 +1330,6 @@ export default function Students() {
             </div>
           </div>
         </OrbitPageShell>
-
-        <FloatingPresenter
-          visible={showMiniPresenter}
-          bubbleVisible={floatingBubbleVisible}
-          bubbleFading={floatingBubbleFading}
-          text={currentFloatingText}
-          speaking={speakingKey === "floating-presenter" || speakingKey === "floating-presenter-auto"}
-          onSpeak={() => toggleSpeech("floating-presenter", currentFloatingText)}
-          onClose={closeFloatingBubble}
-          onBubbleMouseEnter={() => handleFloatingBubbleMouseEnter(currentFloatingText)}
-          onBubbleMouseLeave={handleFloatingBubbleMouseLeave}
-        />
 
         <Dialog open={openSmartSystem} onOpenChange={setOpenSmartSystem}>
           <DialogContent className="max-w-2xl">
