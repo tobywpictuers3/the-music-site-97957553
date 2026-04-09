@@ -1,4 +1,10 @@
-import { useEffect, useMemo, type CSSProperties, type ReactNode, type RefObject } from "react";
+import {
+  useEffect,
+  useMemo,
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import stageBgLight from "@/assets/orbit-system/stage/light/stage-bg.webp";
 import stageBgDark from "@/assets/orbit-system/stage/dark/stage-bg.webp";
 import HeroCenterPresenter from "./HeroCenterPresenter";
@@ -121,13 +127,13 @@ export default function OrbitHeroLayout({
       ) : null}
 
       <div
-        className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,760px)_minmax(420px,760px)] lg:px-10"
+        className="relative z-10 mx-auto grid min-h-[100svh] max-w-[1600px] items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(420px,760px)_minmax(0,760px)] lg:px-10"
         style={{
           paddingTop: "calc(var(--orbit-header-offset) + 20px)",
           paddingBottom: "32px",
         }}
       >
-        <div className="flex items-center justify-center lg:justify-start">
+        <div className="flex items-center justify-center lg:col-start-2 lg:justify-self-end">
           <div className="mx-auto w-full max-w-[760px] text-right">
             <h1 className="space-y-2 text-[clamp(2rem,4.1vw,4.35rem)] font-bold leading-[1.08]">
               {page.hero.titleLines.map((line, index) => (
@@ -169,7 +175,7 @@ export default function OrbitHeroLayout({
           </div>
         </div>
 
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center lg:col-start-1 lg:row-start-1">
           <div className="relative w-full max-w-[760px]">
             <OrbitWheel
               items={page.orbit.items}
