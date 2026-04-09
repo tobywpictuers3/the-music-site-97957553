@@ -4,7 +4,12 @@ import stageBgDark from "@/assets/orbit-system/stage/dark/stage-bg.webp";
 import HeroCenterPresenter from "./HeroCenterPresenter";
 import OrbitWheel from "./OrbitWheel";
 import { useOrbitHeroState } from "./useOrbitHeroState";
-import type { PageConfig, PresenterConfig, ThemeMode } from "./orbit.types";
+import type {
+  OrbitItemConfig,
+  PageConfig,
+  PresenterConfig,
+  ThemeMode,
+} from "./orbit.types";
 
 type OrbitHeroLayoutProps = {
   page: PageConfig;
@@ -12,6 +17,7 @@ type OrbitHeroLayoutProps = {
   themeMode: ThemeMode;
   heroRef: RefObject<HTMLElement | null>;
   headerOverlay?: ReactNode;
+  onOrbitItemClick?: (item: OrbitItemConfig) => void;
 };
 
 export default function OrbitHeroLayout({
@@ -20,6 +26,7 @@ export default function OrbitHeroLayout({
   themeMode,
   heroRef,
   headerOverlay,
+  onOrbitItemClick,
 }: OrbitHeroLayoutProps) {
   const {
     rotationDeg,
@@ -33,7 +40,13 @@ export default function OrbitHeroLayout({
     defaultLook: page.orbit.defaultLook,
   });
 
-  function handleItemClick(targetSectionId?: string) {
+  function handleItemClick(item: OrbitItemConfig) {
+    if (onOrbitItemClick) {
+      onOrbitItemClick(item);
+      return;
+    }
+
+    const targetSectionId = item.targetSectionId;
     if (!targetSectionId) return;
 
     const target = document.getElementById(targetSectionId);
@@ -162,7 +175,7 @@ export default function OrbitHeroLayout({
               themeMode={themeMode}
               onItemEnter={setActiveItemId}
               onItemLeave={clearActiveItem}
-              onItemClick={(item) => handleItemClick(item.targetSectionId)}
+              onItemClick={handleItemClick}
             />
 
             <HeroCenterPresenter
