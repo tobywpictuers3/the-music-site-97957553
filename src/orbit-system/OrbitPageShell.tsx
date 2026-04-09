@@ -109,10 +109,13 @@ export default function OrbitPageShell({
   const footerDockActive = footerDockOffsetPx > 0;
 
   const contentVars = {
-    "--orbit-content-left-offset": activeBubble
-      ? "min(760px, 46vw)"
-      : "220px",
+    "--orbit-content-left-offset": activeBubble ? "min(760px, 46vw)" : "220px",
   } as CSSProperties;
+
+  const seamFadeBackground =
+    themeMode === "dark"
+      ? "linear-gradient(to bottom, rgba(9,11,18,0), rgba(9,11,18,0.16) 38%, rgba(9,11,18,0.72) 100%)"
+      : "linear-gradient(to bottom, rgba(246,243,239,0), rgba(246,243,239,0.18) 38%, rgba(246,243,239,0.82) 100%)";
 
   return (
     <div className="orbit-page-shell relative">
@@ -144,8 +147,31 @@ export default function OrbitPageShell({
       />
 
       <div
+        className="pointer-events-none relative z-[11] -mt-5 h-14 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            maskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.62), rgba(0,0,0,1))",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.62), rgba(0,0,0,1))",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: seamFadeBackground,
+          }}
+        />
+      </div>
+
+      <div
         className={cn(
-          "relative z-10 transition-[padding-left] duration-300 xl:pl-[var(--orbit-content-left-offset)]",
+          "relative z-10 -mt-6 pt-6 transition-[padding-left] duration-300 xl:pl-[var(--orbit-content-left-offset)]",
           contentClassName
         )}
         style={contentVars}
