@@ -20,10 +20,21 @@ export default function InnerPageLayout({
 }: InnerPageLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <style>{`
+        .inner-page-main {
+          padding-top: 92px;
+          transition: padding 300ms ease;
+        }
+
+        .inner-page-main:has(.orbit-page-shell) {
+          padding-top: 0px;
+        }
+      `}</style>
+
       <Header />
 
       <main
-        className={cn("relative flex-1 transition-[padding] duration-300", className)}
+        className={cn("inner-page-main relative flex-1", className)}
         style={{ paddingInlineStart: "var(--page-rail-offset, 0px)" }}
       >
         {children}
