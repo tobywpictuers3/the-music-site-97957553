@@ -26,6 +26,7 @@ type OrbitPageShellProps = {
   contentClassName?: string;
   onOrbitItemClick?: (item: OrbitItemConfig) => void;
   controlledActiveItemId?: OrbitItemId | null;
+  disableStickyGuide?: boolean;
 };
 
 function cn(...classes: Array<string | false | null | undefined>) {
@@ -43,6 +44,7 @@ export default function OrbitPageShell({
   contentClassName = "",
   onOrbitItemClick,
   controlledActiveItemId,
+  disableStickyGuide = false,
 }: OrbitPageShellProps) {
   const heroRef = useRef<HTMLElement | null>(null);
 
@@ -109,7 +111,7 @@ export default function OrbitPageShell({
   const footerDockActive = footerDockOffsetPx > 0;
 
   const contentVars = {
-    "--orbit-content-left-offset": activeBubble ? "min(760px, 46vw)" : "220px",
+    "--orbit-content-left-offset": "220px",
   } as CSSProperties;
 
   const seamFadeBackground =
@@ -136,15 +138,17 @@ export default function OrbitPageShell({
         pauseMotion={footerDockActive}
       />
 
-      <StickyGuide
-        presenter={presenter}
-        themeMode={themeMode}
-        visible={stickyVisible}
-        activeBubble={activeBubble}
-        bannerHeightPx={page.tickerBanner.heightPx}
-        bannerBottomOffsetPx={page.tickerBanner.bottomOffsetPx}
-        dockOffsetPx={footerDockOffsetPx}
-      />
+      {!disableStickyGuide ? (
+        <StickyGuide
+          presenter={presenter}
+          themeMode={themeMode}
+          visible={stickyVisible}
+          activeBubble={activeBubble}
+          bannerHeightPx={page.tickerBanner.heightPx}
+          bannerBottomOffsetPx={page.tickerBanner.bottomOffsetPx}
+          dockOffsetPx={footerDockOffsetPx}
+        />
+      ) : null}
 
       <div
         className="pointer-events-none relative z-[11] -mt-5 h-14 overflow-hidden"
