@@ -30,9 +30,7 @@ export default function StickyGuide({
       style={{
         bottom: `${bannerHeightPx + bannerBottomOffsetPx + 8 + dockOffsetPx}px`,
         opacity: visible ? 1 : 0,
-        transform: visible
-          ? "translateY(0px)"
-          : "translateY(-140px)",
+        transform: visible ? "translateY(0px)" : "translateY(-140px)",
         transition:
           "bottom 120ms linear, opacity 380ms ease, transform 520ms cubic-bezier(0.22,1,0.36,1)",
       }}
@@ -42,7 +40,7 @@ export default function StickyGuide({
         <img
           src={presenter.looks.default.src}
           alt={presenter.looks.default.alt}
-          className="h-auto object-contain"
+          className="pointer-events-none h-auto object-contain"
           style={{
             width: "clamp(82px, 7.8vw, 116px)",
             maxWidth: "116px",
@@ -50,7 +48,9 @@ export default function StickyGuide({
           }}
         />
 
-        <SpeechBubbleLayer bubble={activeBubble} themeMode={themeMode} />
+        <div className="pointer-events-auto">
+          <SpeechBubbleLayer bubble={activeBubble} themeMode={themeMode} />
+        </div>
       </div>
     </div>
   );
