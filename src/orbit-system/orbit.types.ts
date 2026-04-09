@@ -1,6 +1,6 @@
 /**
- * כל הטיפוסים של המערכת.
- * כאן מגדירים את "השפה" שכל שאר הקבצים משתמשים בה.
+ * כל הטיפוסים של מערכת האורביט.
+ * כאן מגדירים את השפה שכל שאר הקבצים משתמשים בה.
  */
 
 export type ThemeMode = "light" | "dark";
@@ -28,7 +28,7 @@ export type PageId =
   | "home"
   | "contact"
   | "students"
-  | "blogs"
+  | "blog"
   | "orchestras"
   | "performances"
   | "about"
@@ -47,13 +47,12 @@ export type PresenterConfig = {
 
   /**
    * כל 8 המצבים של הדמות:
-   * ברירת מחדל + 6 זוויות + מצב שלט לדף הבית
+   * ברירת מחדל + 6 זוויות + מצב שלט
    */
   looks: Record<PresenterLook, PresenterVisual>;
 
   /**
    * שליטה מרוכזת בגדלים.
-   * אפשר לשנות כאן, וכל המערכת תתעדכן.
    */
   sizing: {
     heroWidth: string;
@@ -69,8 +68,7 @@ export type OrbitItemConfig = {
   id: OrbitItemId;
 
   /**
-   * כרגע שם גנרי 1..5.
-   * בהמשך מחליפים לטקסט אמיתי לפי תוכן הדף.
+   * הטקסט שמופיע בעיגול.
    */
   label: string;
 
@@ -84,7 +82,7 @@ export type OrbitItemConfig = {
   baseAngleDeg: number;
 
   /**
-   * אפשר לחבר בלחיצה לסקשן בדף.
+   * סקשן יעד בדף.
    */
   targetSectionId?: string;
 };
@@ -94,8 +92,7 @@ export type BubbleConfig = {
   text: string;
 
   /**
-   * מתי הבועה מופיעה אחרי סוף ההירו.
-   * 0 = הרגע שבו נגמר ההירו.
+   * מתי הבועה מופיעה אחרי נקודת ההפעלה של ההירו.
    */
   showFromAfterHeroPx: number;
   hideAfterHeroPx: number;
