@@ -95,6 +95,98 @@ const basePages: Record<PageId, PageConfig> = {
   sheetMusic: createBasePage("sheetMusic", "/sheet-music", "classicalGuitar"),
 };
 
+basePages.students = {
+  pageId: "students",
+  route: "/students",
+  presenterId: "piano",
+  hero: {
+    titleLines: ["לא רק שיעורי נגינה שבועיים,", "אלא דרך", "מוזיקלית שלמה"],
+    introLines: [
+      "כאן לומדים מוסיקה מתוך בהירות, הקשבה, דיוק ורצף.",
+      "לא כמפגש חד־פעמי, אלא כמסלול שמחזיק תלמידה לאורך זמן — עם רמה, מסגרת, ליווי ודרך עבודה מסודרת.",
+    ],
+    headerOffsetPx: 96,
+  },
+  orbit: {
+    items: [
+      {
+        id: "1",
+        label: "מסלול",
+        baseAngleDeg: 342,
+        targetSectionId: "track-section",
+      },
+      {
+        id: "2",
+        label: "לימוד",
+        baseAngleDeg: 54,
+        targetSectionId: "studies-section",
+      },
+      {
+        id: "3",
+        label: "דרך",
+        baseAngleDeg: 126,
+        targetSectionId: "belief-section",
+      },
+      {
+        id: "4",
+        label: "תהליך",
+        baseAngleDeg: 198,
+        targetSectionId: "process-section",
+      },
+      {
+        id: "5",
+        label: "מערכת",
+        baseAngleDeg: 270,
+        targetSectionId: "system-section",
+      },
+    ],
+    rotationSpeedDegPerSec: 1.05,
+    defaultLook: "default",
+  },
+  stickyGuide: {
+    idleLook: "default",
+    bubbles: [
+      {
+        id: "students-bubble-1",
+        text: "כאן לא בונים רק שיעור טוב, אלא דרך יציבה ומוזיקלית שנשארת לאורך זמן — עם רמה, רצף, הקשבה וליווי אמיתי.",
+        showFromAfterHeroPx: 40,
+        hideAfterHeroPx: 760,
+        maxWidthPx: 610,
+        offsetX: 18,
+        offsetY: -6,
+        enterMs: 240,
+        exitMs: 180,
+      },
+      {
+        id: "students-bubble-2",
+        text: "המערכת, החומרים, התרגול והמעקב לא באים במקום השיעור — הם מחזיקים את הדרך בין המפגשים ומאפשרים לתלמידה להתקדם באמת.",
+        showFromAfterHeroPx: 920,
+        hideAfterHeroPx: 1950,
+        maxWidthPx: 640,
+        offsetX: 22,
+        offsetY: 2,
+        enterMs: 240,
+        exitMs: 180,
+      },
+    ],
+  },
+  tickerBanner: {
+    enabled: true,
+    items: [
+      "מסלול יציב",
+      "שיעור שבועי",
+      "אימון בין שיעורים",
+      "חומרים מסודרים",
+      "מערכת תלמידות",
+      "יחס אישי ורמה מקצועית",
+    ],
+    heightPx: 96,
+    bottomOffsetPx: 34,
+    opacity: 0.92,
+    loopDurationSec: 38,
+  },
+};
+
 basePages.about = {
   pageId: "about",
   route: "/about",
@@ -111,36 +203,11 @@ basePages.about = {
   },
   orbit: {
     items: [
-      {
-        id: "1",
-        label: "הוראה",
-        baseAngleDeg: 342,
-        targetSectionId: "about-teacher",
-      },
-      {
-        id: "2",
-        label: "למידה",
-        baseAngleDeg: 198,
-        targetSectionId: "about-student",
-      },
-      {
-        id: "3",
-        label: "במה",
-        baseAngleDeg: 54,
-        targetSectionId: "about-stage",
-      },
-      {
-        id: "4",
-        label: "עיבוד",
-        baseAngleDeg: 126,
-        targetSectionId: "about-arrangement",
-      },
-      {
-        id: "5",
-        label: "הפקה",
-        baseAngleDeg: 270,
-        targetSectionId: "about-production",
-      },
+      { id: "1", label: "הוראה", baseAngleDeg: 342, targetSectionId: "about-teacher" },
+      { id: "2", label: "למידה", baseAngleDeg: 198, targetSectionId: "about-student" },
+      { id: "3", label: "במה", baseAngleDeg: 54, targetSectionId: "about-stage" },
+      { id: "4", label: "עיבוד", baseAngleDeg: 126, targetSectionId: "about-arrangement" },
+      { id: "5", label: "הפקה", baseAngleDeg: 270, targetSectionId: "about-production" },
     ],
     rotationSpeedDegPerSec: 1.05,
     defaultLook: "default",
@@ -205,36 +272,11 @@ basePages.blog = {
   },
   orbit: {
     items: [
-      {
-        id: "1",
-        label: "מוביל",
-        baseAngleDeg: 270,
-        targetSectionId: "featured",
-      },
-      {
-        id: "2",
-        label: "מאמרים",
-        baseAngleDeg: 338,
-        targetSectionId: "articles",
-      },
-      {
-        id: "3",
-        label: "שאלות",
-        baseAngleDeg: 52,
-        targetSectionId: "quick-questions",
-      },
-      {
-        id: "4",
-        label: "קהילה",
-        baseAngleDeg: 126,
-        targetSectionId: "community",
-      },
-      {
-        id: "5",
-        label: "נושאים",
-        baseAngleDeg: 202,
-        targetSectionId: "requested-topics",
-      },
+      { id: "1", label: "מוביל", baseAngleDeg: 270, targetSectionId: "featured" },
+      { id: "2", label: "מאמרים", baseAngleDeg: 338, targetSectionId: "articles" },
+      { id: "3", label: "שאלות", baseAngleDeg: 52, targetSectionId: "quick-questions" },
+      { id: "4", label: "קהילה", baseAngleDeg: 126, targetSectionId: "community" },
+      { id: "5", label: "נושאים", baseAngleDeg: 202, targetSectionId: "requested-topics" },
     ],
     rotationSpeedDegPerSec: 1.05,
     defaultLook: "default",
@@ -296,36 +338,11 @@ basePages.orchestras = {
   },
   orbit: {
     items: [
-      {
-        id: "1",
-        label: "סקירה",
-        baseAngleDeg: 270,
-        targetSectionId: "overview-section",
-      },
-      {
-        id: "2",
-        label: "הצעה",
-        baseAngleDeg: 338,
-        targetSectionId: "pricing-section",
-      },
-      {
-        id: "3",
-        label: "תקציב",
-        baseAngleDeg: 52,
-        targetSectionId: "pricing-section",
-      },
-      {
-        id: "4",
-        label: "הופעות",
-        baseAngleDeg: 126,
-        targetSectionId: "events-section",
-      },
-      {
-        id: "5",
-        label: "קשר",
-        baseAngleDeg: 202,
-        targetSectionId: "contact-section",
-      },
+      { id: "1", label: "סקירה", baseAngleDeg: 270, targetSectionId: "overview-section" },
+      { id: "2", label: "הצעה", baseAngleDeg: 338, targetSectionId: "pricing-section" },
+      { id: "3", label: "תקציב", baseAngleDeg: 52, targetSectionId: "pricing-section" },
+      { id: "4", label: "הופעות", baseAngleDeg: 126, targetSectionId: "events-section" },
+      { id: "5", label: "קשר", baseAngleDeg: 202, targetSectionId: "contact-section" },
     ],
     rotationSpeedDegPerSec: 1.05,
     defaultLook: "default",
@@ -387,36 +404,11 @@ basePages.performances = {
   },
   orbit: {
     items: [
-      {
-        id: "1",
-        label: "סקירה",
-        baseAngleDeg: 270,
-        targetSectionId: "performances-overview-section",
-      },
-      {
-        id: "2",
-        label: "מסלולים",
-        baseAngleDeg: 338,
-        targetSectionId: "performances-packages-section",
-      },
-      {
-        id: "3",
-        label: "יומן",
-        baseAngleDeg: 52,
-        targetSectionId: "performances-calendar-section",
-      },
-      {
-        id: "4",
-        label: "שאלות",
-        baseAngleDeg: 126,
-        targetSectionId: "performances-faq-section",
-      },
-      {
-        id: "5",
-        label: "קשר",
-        baseAngleDeg: 202,
-        targetSectionId: "performances-contact-section",
-      },
+      { id: "1", label: "סקירה", baseAngleDeg: 270, targetSectionId: "performances-overview-section" },
+      { id: "2", label: "מסלולים", baseAngleDeg: 338, targetSectionId: "performances-packages-section" },
+      { id: "3", label: "יומן", baseAngleDeg: 52, targetSectionId: "performances-calendar-section" },
+      { id: "4", label: "שאלות", baseAngleDeg: 126, targetSectionId: "performances-faq-section" },
+      { id: "5", label: "קשר", baseAngleDeg: 202, targetSectionId: "performances-contact-section" },
     ],
     rotationSpeedDegPerSec: 1.05,
     defaultLook: "default",
@@ -478,36 +470,11 @@ basePages.sheetMusic = {
   },
   orbit: {
     items: [
-      {
-        id: "1",
-        label: "שירותים",
-        baseAngleDeg: 270,
-        targetSectionId: "services-section",
-      },
-      {
-        id: "2",
-        label: "מאגר",
-        baseAngleDeg: 338,
-        targetSectionId: "catalog",
-      },
-      {
-        id: "3",
-        label: "הזמנה",
-        baseAngleDeg: 52,
-        targetSectionId: "custom-order",
-      },
-      {
-        id: "4",
-        label: "טופס",
-        baseAngleDeg: 126,
-        targetSectionId: "request-form",
-      },
-      {
-        id: "5",
-        label: "שאלות",
-        baseAngleDeg: 202,
-        targetSectionId: "faq-section",
-      },
+      { id: "1", label: "שירותים", baseAngleDeg: 270, targetSectionId: "services-section" },
+      { id: "2", label: "מאגר", baseAngleDeg: 338, targetSectionId: "catalog" },
+      { id: "3", label: "הזמנה", baseAngleDeg: 52, targetSectionId: "custom-order" },
+      { id: "4", label: "טופס", baseAngleDeg: 126, targetSectionId: "request-form" },
+      { id: "5", label: "שאלות", baseAngleDeg: 202, targetSectionId: "faq-section" },
     ],
     rotationSpeedDegPerSec: 1.05,
     defaultLook: "default",
