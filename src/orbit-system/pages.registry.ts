@@ -282,6 +282,97 @@ basePages.blog = {
   },
 };
 
+basePages.orchestras = {
+  pageId: "orchestras",
+  route: "/orchestras",
+  presenterId: "drums",
+  hero: {
+    titleLines: ["לא רק מחיר,", "אלא מסלול", "להזמנת הופעה"],
+    introLines: [
+      "כאן אפשר להבין מה מתאים לך, לבנות הצעת מחיר, לבדוק תקציב, ולראות הופעות קרובות.",
+      "הדף הזה מחבר בין בחירה מעשית לבין חוויית דף ברורה, עם ניווט מעגלי כמו בשאר האתר.",
+    ],
+    headerOffsetPx: 96,
+  },
+  orbit: {
+    items: [
+      {
+        id: "1",
+        label: "סקירה",
+        baseAngleDeg: 270,
+        targetSectionId: "overview-section",
+      },
+      {
+        id: "2",
+        label: "הצעה",
+        baseAngleDeg: 338,
+        targetSectionId: "pricing-section",
+      },
+      {
+        id: "3",
+        label: "תקציב",
+        baseAngleDeg: 52,
+        targetSectionId: "pricing-section",
+      },
+      {
+        id: "4",
+        label: "הופעות",
+        baseAngleDeg: 126,
+        targetSectionId: "events-section",
+      },
+      {
+        id: "5",
+        label: "קשר",
+        baseAngleDeg: 202,
+        targetSectionId: "contact-section",
+      },
+    ],
+    rotationSpeedDegPerSec: 1.05,
+    defaultLook: "default",
+  },
+  stickyGuide: {
+    idleLook: "default",
+    bubbles: [
+      {
+        id: "orchestras-bubble-1",
+        text: "כאן הדף לא מתחיל בטופס, אלא בסקירה ברורה: מה אפשר להזמין, איך בונים הצעה, ואיך להתקדם בלי ללכת לאיבוד.",
+        showFromAfterHeroPx: 40,
+        hideAfterHeroPx: 760,
+        maxWidthPx: 580,
+        offsetX: 18,
+        offsetY: -6,
+        enterMs: 240,
+        exitMs: 180,
+      },
+      {
+        id: "orchestras-bubble-2",
+        text: "באזור המחיר אפשר לעבוד בשני מסלולים: לבנות הצעת מחיר ידנית, או להתחיל מתקציב ולקבל כיוון מותאם.",
+        showFromAfterHeroPx: 900,
+        hideAfterHeroPx: 1900,
+        maxWidthPx: 620,
+        offsetX: 22,
+        offsetY: 2,
+        enterMs: 240,
+        exitMs: 180,
+      },
+    ],
+  },
+  tickerBanner: {
+    enabled: true,
+    items: [
+      "הצעת מחיר מותאמת",
+      "בדיקת תקציב",
+      "חבילות ותוספות",
+      "הופעות קרובות",
+      "יצירת קשר",
+    ],
+    heightPx: 96,
+    bottomOffsetPx: 34,
+    opacity: 0.92,
+    loopDurationSec: 38,
+  },
+};
+
 export const pagesRegistry: Record<PageId, PageConfig> = basePages;
 
 /**
