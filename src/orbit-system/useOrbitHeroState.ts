@@ -3,7 +3,8 @@
  * - תנועה איטית רציפה
  * - עצירה חלקה בהובר
  * - קביעת הזווית הפעילה של הדמות במרכז
- * - אפשרות לקבל אייטם פעיל חיצוני מהדף
+ * - אפשרות לקבל עיגול פעיל חיצוני רק לצורך הדגשה
+ * - אחרי יציאה מריחוף הדמות חוזרת לברירת מחדל
  * - איפוס הובר בזמן גלילה, כדי שהמעגל לא ייתקע כשחוזרים למעלה
  */
 
@@ -90,9 +91,9 @@ export function useOrbitHeroState({
   const activeItemId = hoveredItemId ?? controlledActiveItemId ?? null;
 
   const activeLook = useMemo<PresenterLook>(() => {
-    if (!activeItemId) return defaultLook;
+    if (!hoveredItemId) return defaultLook;
 
-    const activeItem = items.find((item) => item.id === activeItemId);
+    const activeItem = items.find((item) => item.id === hoveredItemId);
     if (!activeItem) return defaultLook;
 
     const renderedClockAngle = getRenderedItemClockAngle(
@@ -101,7 +102,7 @@ export function useOrbitHeroState({
     );
 
     return clockAngleToLook(renderedClockAngle);
-  }, [activeItemId, defaultLook, items, rotationDeg]);
+  }, [hoveredItemId, defaultLook, items, rotationDeg]);
 
   return {
     rotationDeg,
