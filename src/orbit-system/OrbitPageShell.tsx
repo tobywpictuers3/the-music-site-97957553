@@ -3,6 +3,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 
@@ -12,7 +13,12 @@ import TickerBanner from "./TickerBanner";
 import { pagesRegistry } from "./pages.registry";
 import { presentersRegistry } from "./presenters.registry";
 import { useStickyGuideState } from "./useStickyGuideState";
-import type { OrbitItemConfig, OrbitItemId, PageId, ThemeMode } from "./orbit.types";
+import type {
+  OrbitItemConfig,
+  OrbitItemId,
+  PageId,
+  ThemeMode,
+} from "./orbit.types";
 
 type OrbitPageShellProps = {
   pageId: PageId;
@@ -102,8 +108,14 @@ export default function OrbitPageShell({
 
   const footerDockActive = footerDockOffsetPx > 0;
 
+  const contentVars = {
+    "--orbit-content-left-offset": activeBubble
+      ? "min(760px, 46vw)"
+      : "220px",
+  } as CSSProperties;
+
   return (
-    <div className="relative">
+    <div className="orbit-page-shell relative">
       <OrbitHeroLayout
         heroRef={heroRef}
         page={page}
@@ -131,7 +143,13 @@ export default function OrbitPageShell({
         dockOffsetPx={footerDockOffsetPx}
       />
 
-      <div className={cn("relative z-10 xl:pl-[220px]", contentClassName)}>
+      <div
+        className={cn(
+          "relative z-10 transition-[padding-left] duration-300 xl:pl-[var(--orbit-content-left-offset)]",
+          contentClassName
+        )}
+        style={contentVars}
+      >
         {children}
       </div>
     </div>
