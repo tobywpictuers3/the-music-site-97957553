@@ -43,7 +43,7 @@ const footerSections: FooterSection[] = [
 ];
 
 const newsletterLink: FooterLink = {
-  label: "להצטרפות לרשימת התפוצה",
+  label: "להצטר התפוצה",
   href: "/contact",
 };
 
@@ -82,12 +82,10 @@ export default function Footer() {
       dir="rtl"
       className="relative mt-24 overflow-hidden border-t text-white"
       style={{
-        borderTopColor: "hsl(var(--footer-border) / 0.18)",
-        backgroundImage: `
-          radial-gradient(circle at top right, hsl(var(--primary) / 0.22), transparent 28%),
-          radial-gradient(circle at top left, hsl(var(--accent) / 0.24), transparent 26%),
-          linear-gradient(180deg, hsl(var(--footer-bg)) 0%, hsl(var(--footer-bg-deep)) 100%)
-        `,
+        borderTopColor: "rgba(230, 182, 92, 0.18)",
+        backgroundColor: "hsl(var(--background))",
+        backgroundImage:
+          "radial-gradient(circle at top right, rgba(230,182,92,0.18), transparent 28%), radial-gradient(circle at top left, rgba(143,37,25,0.22), transparent 26%), linear-gradient(180deg, rgba(31,20,17,0.98) 0%, rgba(18,10,9,1) 100%)",
       }}
     >
       <div
@@ -97,15 +95,6 @@ export default function Footer() {
           backgroundImage: `url(${redTexture})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-        }}
-      />
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, hsl(var(--background) / 0) 0%, hsl(var(--footer-bg) / 0.08) 28%, hsl(var(--footer-bg) / 0.22) 100%)",
         }}
       />
 
@@ -129,14 +118,15 @@ export default function Footer() {
               אומנות ואמינות. זו יצירה.
             </p>
 
-            <p className="mt-4 max-w-md text-sm leading-7 text-white/74">
+            <p className="mt-4 max-w-md text-sm leading-7 text-white/75">
               מוזיקה, יצירה ושירות מקצועי בשפה נקייה, מדויקת ומכובדת.
             </p>
 
             <div className="mt-6">
               <FooterNavLink
                 link={newsletterLink}
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-primary/30 bg-white/6 px-5 py-3 text-sm font-medium text-white shadow-soft backdrop-blur-sm transition hover:border-primary/55 hover:bg-white/10"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl border px-5 py-3 text-sm font-medium text-white shadow-soft transition hover:bg-white/10"
+                style={undefined}
               />
             </div>
           </div>
@@ -150,7 +140,7 @@ export default function Footer() {
                 {section.title}
               </h3>
 
-              <nav className="flex flex-col gap-3 text-sm text-white/72">
+              <nav className="flex flex-col gap-3 text-sm text-white/75">
                 {section.links.map((link) => (
                   <FooterNavLink
                     key={`${section.title}-${link.href}`}
@@ -165,7 +155,7 @@ export default function Footer() {
 
         <div className="mt-10 border-t border-white/10 pt-5">
           <div className="flex flex-col gap-3 text-center md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/52 md:justify-start">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/55 md:justify-start">
               {legalLinks.map((link, index) => (
                 <div key={link.href} className="flex items-center gap-4">
                   <FooterNavLink
@@ -173,13 +163,13 @@ export default function Footer() {
                     className="transition hover:text-primary"
                   />
                   {index < legalLinks.length - 1 ? (
-                    <span className="text-white/18">•</span>
+                    <span className="text-white/20">•</span>
                   ) : null}
                 </div>
               ))}
             </div>
 
-            <p className="text-xs text-white/46">
+            <p className="text-xs text-white/50">
               © {year} Toby Music. כל הזכויות שמורות.
             </p>
           </div>
