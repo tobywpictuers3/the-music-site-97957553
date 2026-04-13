@@ -4,21 +4,27 @@
  * - מתי הבאנר מופיע
  * - איזו בועה פעילה כרגע
  *
- * ההופעה מתחילה רק כשההירו נגלל בערך לחצי גובהו.
+ * כל התיזמונים מגיעים עכשיו מהקונפיג של הדף.
  */
 
 import { useEffect, useMemo, useState, type RefObject } from "react";
-import type { BubbleConfig } from "./orbit.types";
+import type {
+  BubbleConfig,
+  StickyGuideConfig,
+  TickerBannerConfig,
+} from "./orbit.types";
 
 type UseStickyGuideStateArgs = {
   heroRef: RefObject<HTMLElement | null>;
-  bubbles: BubbleConfig[];
+  stickyGuide: StickyGuideConfig;
+  tickerBanner: TickerBannerConfig;
   headerOffsetPx: number;
 };
 
 export function useStickyGuideState({
   heroRef,
-  bubbles,
+  stickyGuide,
+  tickerBanner,
   headerOffsetPx,
 }: UseStickyGuideStateArgs) {
   const [afterActivationScrollPx, setAfterActivationScrollPx] = useState(0);
@@ -30,10 +36,13 @@ export function useStickyGuideState({
 
       const heroStartY = Math.max(heroEl.offsetTop - headerOffsetPx, 0);
       const heroHeight = heroEl.offsetHeight;
-      const activationThresholdPx = Math.min(
-        heroHeight * 0.5,
-        window.innerHeight * 0.52
-      );
+
+      const activationRatio = stickyGuide.activationRatio ?? 0.5;
+      const activationOffsetPx = stickyGuide.activationOffsetPx ?? 0;
+
+      const activationThresholdPx =
+        Math.min(heroHeight * activationRatio, window.innerHeight * 0.52) +
+        activationOffsetPx;
 
       const currentScrollY = window.scrollY;
       const delta = Math.max(
@@ -52,20 +61,24 @@ export function useStickyGuideState({
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [headerOffsetPx, heroRef]);
+  }, [headerOffsetPx, heroRef, stickyGuide.activationOffsetPx, stickyGuide.activationRatio]);
 
-  const stickyVisible = afterActivationScrollPx > 0;
-  const bannerVisible = stickyVisible;
+  const stickyVisible =
+    afterActivationScrollPx >= (stickyGuide.showFromAfterHeroPx ?? 0);
+
+  const bannerVisible =
+    tickerBanner.enabled &&
+    afterActivationScrollPx >= (tickerBanner.showFromAfterHeroPx ?? 0);
 
   const activeBubble = useMemo(() => {
     return (
-      bubbles.find(
-        (bubble) =>
+      stickyGuide.bubbles.find(
+        (bubble: BubbleConfig) =>
           afterActivationScrollPx >= bubble.showFromAfterHeroPx &&
           afterActivationScrollPx <= bubble.hideAfterHeroPx
       ) ?? null
     );
-  }, [afterActivationScrollPx, bubbles]);
+  }, [afterActivationScrollPx, stickyGuide.bubbles]);
 
   return {
     stickyVisible,
