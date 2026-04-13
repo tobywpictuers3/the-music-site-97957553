@@ -1,6 +1,8 @@
 /**
  * כל הטיפוסים של מערכת האורביט.
- * כאן מגדירים את השפה שכל שאר הקבצים משתמשים בה.
+ * המטרה:
+ * - כל התוכן, התזמונים והחלוקות יהיו ברמת הדף
+ * - כל הפריסה, ההתנהגות והעיצוב יהיו ברמת המערכת
  */
 
 export type ThemeMode = "light" | "dark";
@@ -44,16 +46,7 @@ export type PresenterVisual = {
 export type PresenterConfig = {
   id: PresenterId;
   label: string;
-
-  /**
-   * כל 8 המצבים של הדמות:
-   * ברירת מחדל + 6 זוויות + מצב שלט
-   */
   looks: Record<PresenterLook, PresenterVisual>;
-
-  /**
-   * שליטה מרוכזת בגדלים.
-   */
   sizing: {
     heroWidth: string;
     heroMaxWidth: string;
@@ -66,24 +59,8 @@ export type PresenterConfig = {
 
 export type OrbitItemConfig = {
   id: OrbitItemId;
-
-  /**
-   * הטקסט שמופיע בעיגול.
-   */
   label: string;
-
-  /**
-   * זווית בסיס של הפריט במסלול.
-   * 0 = שעה 12
-   * 90 = שעה 3
-   * 180 = שעה 6
-   * 270 = שעה 9
-   */
   baseAngleDeg: number;
-
-  /**
-   * סקשן יעד בדף.
-   */
   targetSectionId?: string;
 };
 
@@ -92,41 +69,73 @@ export type BubbleConfig = {
   text: string;
 
   /**
-   * מתי הבועה מופיעה אחרי נקודת ההפעלה של ההירו.
+   * מתי הבועה פעילה ביחס לגלילה אחרי אזור ההפעלה של ההירו
    */
   showFromAfterHeroPx: number;
   hideAfterHeroPx: number;
 
   /**
-   * כיווני מיקום עדינים לכל בועה.
+   * כיווני מיקום עדינים לכל בועה
    */
   offsetX?: number;
   offsetY?: number;
-
   maxWidthPx?: number;
+
+  /**
+   * שליטה מלאה בתיזמונים ברמת הדף
+   */
   enterMs?: number;
   exitMs?: number;
+  holdMs?: number;
+  fadeMs?: number;
+
+  /**
+   * האם מותר לסגור ידנית
+   */
+  dismissible?: boolean;
+};
+
+export type StickyGuideConfig = {
+  idleLook: "default";
+
+  /**
+   * מתי בכלל מפעילים את אזור ה-sticky אחרי תחילת ההירו
+   */
+  activationOffsetPx?: number;
+
+  /**
+   * כמה מגובה ההירו צריך לעבור לפני שהמערכת מתחילה לעבוד.
+   * 0.5 = בערך חצי הירו
+   */
+  activationRatio?: number;
+
+  /**
+   * עיכוב נוסף בהופעת המדריך עצמו אחרי נקודת ההפעלה
+   */
+  showFromAfterHeroPx?: number;
+
+  bubbles: BubbleConfig[];
 };
 
 export type TickerBannerConfig = {
   enabled: boolean;
   items: string[];
 
-  /**
-   * גובה ומיקום של הבאנר.
-   */
   heightPx: number;
   bottomOffsetPx: number;
-
-  /**
-   * שקיפות כללית של הבאנר.
-   */
   opacity: number;
+  loopDurationSec: number;
 
   /**
-   * זמן לופ של הטקסט הנוסע.
+   * מתי הבאנר מתחיל להופיע אחרי אזור ההפעלה
    */
-  loopDurationSec: number;
+  showFromAfterHeroPx?: number;
+
+  /**
+   * זמני כניסה/יציאה
+   */
+  enterMs?: number;
+  exitMs?: number;
 };
 
 export type PageConfig = {
@@ -137,11 +146,6 @@ export type PageConfig = {
   hero: {
     titleLines: string[];
     introLines: string[];
-
-    /**
-     * גובה ה-header המרחף.
-     * רק התוכן נדחף למטה, לא הרקע של ההירו.
-     */
     headerOffsetPx: number;
   };
 
@@ -151,10 +155,6 @@ export type PageConfig = {
     defaultLook: "default";
   };
 
-  stickyGuide: {
-    idleLook: "default";
-    bubbles: BubbleConfig[];
-  };
-
+  stickyGuide: StickyGuideConfig;
   tickerBanner: TickerBannerConfig;
 };
