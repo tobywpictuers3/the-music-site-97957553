@@ -23,6 +23,10 @@ export default function TickerBanner({
     "   ✦   "
   )}`;
 
+  const enterMs = config.enterMs ?? 320;
+  const exitMs = config.exitMs ?? 320;
+  const transitionMs = visible ? enterMs : exitMs;
+
   return (
     <>
       <style>
@@ -40,8 +44,7 @@ export default function TickerBanner({
           bottom: `${config.bottomOffsetPx + dockOffsetPx}px`,
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(24px)",
-          transition:
-            "bottom 120ms linear, opacity 320ms ease, transform 320ms ease",
+          transition: `bottom 120ms linear, opacity ${transitionMs}ms ease, transform ${transitionMs}ms ease`,
         }}
         aria-hidden={!visible}
       >
