@@ -8,6 +8,7 @@ import {
   ABOUT_TOPICS,
   type AboutTopicItem,
 } from "@/content/orbit/aboutOrbit";
+import { ABOUT_PAGE_CONTENT } from "@/content/orbit/aboutPageContent";
 import red3 from "@/assets/red3.png";
 
 function SignatureLine({ text }: { text: string }) {
@@ -170,6 +171,11 @@ function ExpandableStoryCard({
 export default function About() {
   const [openId, setOpenId] = useState<string>(ABOUT_TOPICS[1].id);
 
+  const activeOrbitId =
+    ABOUT_PAGE_CONTENT.orbit.items.find(
+      (item) => item.targetSectionId === `about-${openId}`
+    )?.id ?? null;
+
   function openCardFromOrbit(item: OrbitItemConfig) {
     const targetSectionId = item.targetSectionId;
     if (!targetSectionId) return;
@@ -190,7 +196,12 @@ export default function About() {
       title="אודות"
       description="המוסיקה ואני — דרך משותפת של למעלה משלושה עשורים."
     >
-      <OrbitPageShell pageId="about" onOrbitItemClick={openCardFromOrbit}>
+      <OrbitPageShell
+        pageId="about"
+        content={ABOUT_PAGE_CONTENT}
+        onOrbitItemClick={openCardFromOrbit}
+        controlledActiveItemId={activeOrbitId}
+      >
         <style>{`
           .shimmer-gold {
             background: linear-gradient(
@@ -219,7 +230,10 @@ export default function About() {
               <div className="space-y-4">
                 {ABOUT_TOPICS.map((item, index) => (
                   <AppearOnScroll key={item.id} delay={index * 70}>
-                    <div className="scroll-mt-28">
+                    <div
+                      className="scroll-mt-28"
+                      onMouseEnter={() => setOpenId(item.id)}
+                    >
                       <ExpandableStoryCard
                         item={item}
                         isOpen={openId === item.id}
