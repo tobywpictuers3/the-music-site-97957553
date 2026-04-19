@@ -2,6 +2,7 @@ import type { OrbitPageContentConfig } from "@/orbit-system/orbit.types";
 
 export const STUDENTS_PAGE_ORBIT_CONTENT: OrbitPageContentConfig = {
   presenterId: "piano",
+
   hero: {
     titleLines: ["לא רק שיעורי נגינה שבועיים,", "אלא דרך", "מוזיקלית שלמה"],
     introLines: [
@@ -9,55 +10,62 @@ export const STUDENTS_PAGE_ORBIT_CONTENT: OrbitPageContentConfig = {
       "לא כמפגש חד־פעמי, אלא כמסלול שמחזיק תלמידה לאורך זמן — עם רמה, מסגרת, ליווי ודרך עבודה מסודרת.",
     ],
   },
+
   orbit: {
     items: [
       {
         id: "1",
-        label: "מסלול",
+        label: "המסלול",
         eyebrow: "01",
-        title: "מסלול",
-        spoiler: "היכרות עם הדרך הכוללת, ההמלצות והמסגרת שמחזיקה לאורך זמן.",
+        title: "המסלול",
+        spoiler:
+          "לא רק שיעור טוב, אלא דרך ברורה שמחזיקה תלמידה לאורך זמן — עם רמה, יחס אישי ורצף אמיתי.",
         baseAngleDeg: 342,
         targetSectionId: "track-section",
       },
       {
         id: "2",
-        label: "לימוד",
+        label: "מה לומדים",
         eyebrow: "02",
-        title: "לימוד",
-        spoiler: "תחומי הלימוד, המקצועות המשלימים והעומק המקצועי.",
+        title: "מה לומדים",
+        spoiler:
+          "פסנתר, חליל צד ומקצועות משלימים — בתוך מסלול מסודר שמחבר בין טכניקה, הבנה והבעה מוזיקלית.",
         baseAngleDeg: 54,
         targetSectionId: "studies-section",
       },
       {
         id: "3",
-        label: "דרך",
+        label: "הדרך",
         eyebrow: "03",
-        title: "דרך",
-        spoiler: "הגישה שמאחורי הלמידה: עומק, עקביות, רגישות וסדר.",
+        title: "הדרך",
+        spoiler:
+          "עומק, בהירות, דרישה מקצועית ורגישות אישית — הגישה שמאחורי כל שיעור וכל התקדמות.",
         baseAngleDeg: 126,
         targetSectionId: "belief-section",
       },
       {
         id: "4",
-        label: "תהליך",
+        label: "איך זה עובד",
         eyebrow: "04",
-        title: "תהליך",
-        spoiler: "שיעור, תרגול, רצף וחומרים שמקדמים בפועל.",
+        title: "איך זה עובד",
+        spoiler:
+          "שיעור, תרגול, חומרים ורצף — תהליך ברור שמאפשר לתלמידה להתקדם באמת, לא רק להתרשם לרגע.",
         baseAngleDeg: 198,
         targetSectionId: "process-section",
       },
       {
         id: "5",
-        label: "מערכת",
+        label: "המערכת",
         eyebrow: "05",
-        title: "מערכת",
-        spoiler: "המערכת שממשיכה את הלמידה גם בין השיעורים.",
+        title: "המערכת",
+        spoiler:
+          "מעטפת דיגיטלית שממשיכה את הלמידה גם בין השיעורים — עם סדר, מעקב, תקשורת וכלים שימושיים.",
         baseAngleDeg: 270,
         targetSectionId: "system-section",
       },
     ],
   },
+
   stickyGuide: {
     activationRatio: 0.5,
     activationOffsetPx: 0,
@@ -65,30 +73,31 @@ export const STUDENTS_PAGE_ORBIT_CONTENT: OrbitPageContentConfig = {
     bubbles: [
       {
         id: "students-bubble-1",
-        text: "כאן תחומי הלימוד מקבלים צורה ברורה: מה מרכזי, מה משלים, ואיך הכל מסתדר למסלול אחד שמחזיק תלמידה לאורך זמן.",
+        text: "כאן רואים קודם כול את המסלול: למי זה מתאים, למה זה בנוי כתהליך, ואיך נראית למידה שיש בה גם עומק וגם בהירות.",
         showFromAfterHeroPx: 40,
         hideAfterHeroPx: 760,
       },
       {
         id: "students-bubble-2",
-        text: "מבחינתי מוסיקה לא נבנית מקיצורי דרך. עומק, רגישות ומשמעת יכולים לחיות יחד — וזה מה שמאפשר התקדמות אמיתית.",
+        text: "תחומי הלימוד כאן לא עומדים לבד — הם נבנים כחלק מדרך רחבה יותר של הבנה, הקשבה והתקדמות מוזיקלית.",
         showFromAfterHeroPx: 900,
         hideAfterHeroPx: 1380,
       },
       {
         id: "students-bubble-3",
-        text: "כאן כבר רואים את התהליך בפועל: שיעור, תרגול, חומרים ורצף. לא רק השראה — אלא דרך עבודה שמתקדמת באמת.",
+        text: "הדרך שלי נשענת על עומק, רגישות ודרישה מקצועית. לא קיצורי דרך — אלא תהליך נכון שאפשר לבנות עליו.",
         showFromAfterHeroPx: 1420,
         hideAfterHeroPx: 1860,
       },
       {
         id: "students-bubble-4",
-        text: "המערכת לא מחליפה את השיעור — היא מחזיקה את הלמידה גם בין המפגשים, בצורה ברורה, נגישה ונעימה לעין.",
+        text: "כאן כבר רואים איך זה עובד בפועל: שיעור, תרגול, חומרים, רצף ומערכת שממשיכה את הלמידה גם בין המפגשים.",
         showFromAfterHeroPx: 1900,
         hideAfterHeroPx: 2500,
       },
     ],
   },
+
   tickerBanner: {
     enabled: true,
     items: [
