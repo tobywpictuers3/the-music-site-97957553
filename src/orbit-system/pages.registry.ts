@@ -1,25 +1,40 @@
-import type { OrbitPageContentConfig, PageId } from "./orbit.types";
+/**
+ * pagesRegistry נגזר כולו מתוך:
+ * - orbitContentRegistry  (תוכן + תיזמונים פר-דף)
+ * - defaultOrbitPageDesign (עיצוב מערכת)
+ *
+ * כלומר:
+ * אין כאן יותר מקור אמת לתוכן עצמו.
+ */
 
-import { HOME_PAGE_ORBIT_CONTENT } from "@/content/orbit/homePageOrbitContent";
-import { CONTACT_PAGE_ORBIT_CONTENT } from "@/content/orbit/contactPageOrbitContent";
-import { STUDENTS_PAGE_ORBIT_CONTENT } from "@/content/orbit/studentsPageOrbitContent";
-import { BLOG_PAGE_ORBIT_CONTENT } from "@/content/orbit/blogPageOrbitContent";
-import { ORCHESTRAS_PAGE_ORBIT_CONTENT } from "@/content/orbit/orchestrasPageOrbitContent";
-import { PERFORMANCES_PAGE_ORBIT_CONTENT } from "@/content/orbit/performancesPageOrbitContent";
-import { ABOUT_PAGE_ORBIT_CONTENT } from "@/content/orbit/aboutPageOrbitContent";
-import { SHEET_MUSIC_PAGE_ORBIT_CONTENT } from "@/content/orbit/sheetMusicPageOrbitContent";
+import { orbitContentRegistry } from "./orbit.content.registry";
+import { resolveOrbitPageConfig } from "./resolveOrbitPageConfig";
+import type { PageConfig, PageId } from "./orbit.types";
 
-export const orbitContentRegistry: Record<PageId, OrbitPageContentConfig> = {
-  home: HOME_PAGE_ORBIT_CONTENT,
-  contact: CONTACT_PAGE_ORBIT_CONTENT,
-  students: STUDENTS_PAGE_ORBIT_CONTENT,
-  blog: BLOG_PAGE_ORBIT_CONTENT,
-  orchestras: ORCHESTRAS_PAGE_ORBIT_CONTENT,
-  performances: PERFORMANCES_PAGE_ORBIT_CONTENT,
-  about: ABOUT_PAGE_ORBIT_CONTENT,
-  sheetMusic: SHEET_MUSIC_PAGE_ORBIT_CONTENT,
+const routeByPageId: Record<PageId, string> = {
+  home: "/",
+  contact: "/contact",
+  students: "/students",
+  blog: "/blog",
+  orchestras: "/orchestras",
+  performances: "/performances",
+  about: "/about",
+  sheetMusic: "/sheets",
 };
 
-export function getOrbitPageContent(pageId: PageId) {
-  return orbitContentRegistry[pageId];
-}
+export const pagesRegistry: Record<PageId, PageConfig> = (
+  Object.keys(routeByPageId) as PageId[]
+).reduce((acc, pageId) => {
+  acc[pageId] = resolveOrbitPageConfig({
+    pageId,
+    route: routeByPageId[pageId],
+    content: orbitContentRegistry[pageId],
+  });
+
+  return acc;
+}, {} as Record<PageId, PageConfig>);
+
+/**
+ * דף הדמו המחובר הראשון.
+ */
+export const orbitDemoPageId: PageId = "about";
