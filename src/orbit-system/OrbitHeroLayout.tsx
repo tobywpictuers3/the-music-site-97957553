@@ -144,8 +144,8 @@ export default function OrbitHeroLayout({
                     color: titleColors[index % titleColors.length],
                     textShadow:
                       themeMode === "dark"
-                        ? "0 4px 24px rgba(0,0,0,0.34)"
-                        : "0 3px 14px rgba(255,255,255,0.18)",
+                        ? "0 1px 2px rgba(0,0,0,0.50), 0 4px 24px rgba(0,0,0,0.34)"
+                        : "0 1px 0 rgba(255,255,255,0.60), 0 3px 14px rgba(255,255,255,0.18)",
                     transition: "color 700ms ease, text-shadow 700ms ease",
                   }}
                 >
@@ -163,8 +163,8 @@ export default function OrbitHeroLayout({
                     : "rgba(26,26,26,0.82)",
                 textShadow:
                   themeMode === "dark"
-                    ? "0 4px 18px rgba(0,0,0,0.26)"
-                    : "0 2px 10px rgba(255,255,255,0.14)",
+                    ? "0 1px 1px rgba(0,0,0,0.45), 0 4px 18px rgba(0,0,0,0.26)"
+                    : "0 1px 0 rgba(255,255,255,0.50), 0 2px 10px rgba(255,255,255,0.14)",
                 transition: "color 700ms ease, text-shadow 700ms ease",
               }}
             >

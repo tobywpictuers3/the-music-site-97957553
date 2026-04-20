@@ -291,8 +291,8 @@ export default function OrbitWheel({
                 ? "rgba(54, 12, 20, 0.30)"
                 : "rgba(158, 41, 55, 0.14)",
               boxShadow: isHovered
-                ? "0 0 28px rgba(220,170,90,0.18)"
-                : "0 10px 20px rgba(0,0,0,0.07)",
+                ? "0 0 28px rgba(220,170,90,0.18), inset 0 1px 0 rgba(255,255,255,0.13), inset 0 -1px 0 rgba(0,0,0,0.18)"
+                : "0 14px 32px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.14)",
               transform: `${position.transform} scale(${isHovered ? 1.05 : 1})`,
               transition:
                 "transform 220ms ease, width 260ms ease, height 260ms ease, border-color 700ms ease, background-color 700ms ease, box-shadow 700ms ease",
@@ -343,8 +343,8 @@ export default function OrbitWheel({
               style={{
                 background:
                   themeMode === "dark"
-                    ? "radial-gradient(circle at top, rgba(255,255,255,0.04), rgba(0,0,0,0.12))"
-                    : "radial-gradient(circle at top, rgba(255,255,255,0.24), rgba(255,255,255,0.06))",
+                    ? "radial-gradient(circle at 38% 22%, rgba(255,255,255,0.11), rgba(0,0,0,0) 48%), radial-gradient(circle at 62% 82%, rgba(0,0,0,0.22), rgba(0,0,0,0) 52%)"
+                    : "radial-gradient(circle at 38% 22%, rgba(255,255,255,0.30), rgba(255,255,255,0) 48%), radial-gradient(circle at 62% 82%, rgba(0,0,0,0.08), rgba(0,0,0,0) 52%)",
                 transition: "background 700ms ease",
               }}
             />
@@ -393,8 +393,8 @@ export default function OrbitWheel({
                       : "#8f5d18",
                     textShadow:
                       themeMode === "dark"
-                        ? "0 2px 10px rgba(0,0,0,0.30)"
-                        : "0 1px 6px rgba(255,255,255,0.16)",
+                        ? "0 1px 1px rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.30)"
+                        : "0 1px 0 rgba(255,255,255,0.55), 0 1px 6px rgba(255,255,255,0.16)",
                     transition: "color 280ms ease, text-shadow 700ms ease",
                     maxWidth: isHovered ? "80%" : "76%",
                   }}
@@ -431,8 +431,8 @@ export default function OrbitWheel({
                     : "#8f5d18",
                   textShadow:
                     themeMode === "dark"
-                      ? "0 2px 10px rgba(0,0,0,0.30)"
-                      : "0 1px 6px rgba(255,255,255,0.16)",
+                      ? "0 1px 1px rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.30)"
+                      : "0 1px 0 rgba(255,255,255,0.55), 0 1px 6px rgba(255,255,255,0.16)",
                   transition: "color 280ms ease, text-shadow 700ms ease",
                 }}
               >

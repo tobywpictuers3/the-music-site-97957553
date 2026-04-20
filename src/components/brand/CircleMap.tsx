@@ -24,8 +24,8 @@ function CircleNodeButton({
       onClick={onClick}
       className={`group relative h-[var(--orbit-size)] w-[var(--orbit-size)] rounded-full border text-center transition-all duration-500 ${
         isActive
-          ? "border-primary/40 bg-background/90 shadow-[0_24px_70px_rgba(0,0,0,0.24)]"
-          : "border-border/70 bg-background/80 hover:border-primary/30 hover:bg-background/90"
+          ? "border-primary/40 bg-background/90 shadow-[0_24px_70px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.10),inset_0_-1px_0_rgba(0,0,0,0.18)]"
+          : "border-border/70 bg-background/80 shadow-[0_14px_32px_rgba(0,0,0,0.14),inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.12)] hover:border-primary/30 hover:bg-background/90"
       }`}
       style={{
         transform: `scale(${isActive ? 1.035 : 1})`,
@@ -63,7 +63,7 @@ function CircleNodeButton({
           }`}
           style={{
             background:
-              "radial-gradient(circle at 50% 25%, rgba(255,255,255,0.05), rgba(0,0,0,0) 55%), radial-gradient(circle at 50% 72%, rgba(128,0,32,0.12), rgba(0,0,0,0) 68%)",
+              "radial-gradient(circle at 36% 20%, rgba(255,255,255,0.13), rgba(0,0,0,0) 46%), radial-gradient(circle at 62% 80%, rgba(0,0,0,0.22), rgba(0,0,0,0) 52%), radial-gradient(circle at 50% 72%, rgba(128,0,32,0.18), rgba(0,0,0,0) 68%)",
           }}
         />
       </span>
@@ -75,7 +75,7 @@ function CircleNodeButton({
       )}
 
       <div className="relative flex h-full flex-col items-center justify-center px-5">
-        <div className="text-[1.85rem] font-bold leading-tight text-foreground md:text-[2.1rem]">
+        <div className="text-[1.85rem] font-bold leading-tight text-foreground md:text-[2.1rem]" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.40)" }}>
           {node.title}
         </div>
 
