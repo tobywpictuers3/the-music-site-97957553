@@ -241,9 +241,10 @@ export default function Index() {
                 {HERO_TEXT.supportLine}
               </p>
 
-              <p className="mt-3 text-[clamp(16px,1.6vw,26px)] font-bold text-foreground/90">
+              {/* Slogan with animated brand shimmer */}
+              <p className="mt-3 text-[clamp(16px,1.6vw,26px)] font-bold">
                 {HERO_TEXT.sloganPrefix}{" "}
-                <span className="bg-gradient-to-l from-accent via-primary to-accent bg-clip-text text-transparent">
+                <span className="shimmer-brand">
                   {HERO_TEXT.sloganAccent}
                 </span>
               </p>
